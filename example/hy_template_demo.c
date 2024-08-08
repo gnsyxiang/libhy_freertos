@@ -20,6 +20,8 @@
 #include <stdio.h>
 #include <string.h>
 
+#include <hy_os_type/hy_type.h>
+
 #include "FreeRTOS.h"
 #include "task.h"
 
@@ -31,7 +33,8 @@ static TaskHandle_t xTask_creat = NULL;
 static void creat_task(void *p)
 {
     os_printf("%s", __FUNCTION__);
-    int cnt = 0;
+
+    hy_s32_t cnt = 0;
 
     taskENTER_CRITICAL();
     taskEXIT_CRITICAL();
@@ -52,23 +55,23 @@ static void creat_task(void *p)
 
 int main(void)
 {
-    BaseType_t xReturn = pdPASS;
+    BaseType_t ret = pdPASS;
 
     os_printf("Freertos v10.2.1 start ");
 
-    xReturn = xTaskCreate((TaskFunction_t )creat_task,
-                          (const char *   )"creat_task",
-                          (unsigned short )128,
-                          (void *         )NULL,
-                          (UBaseType_t    )1,
-                          (TaskHandle_t * )&xTask_creat);
-    if (pdPASS != xReturn){
+    ret = xTaskCreate((TaskFunction_t )creat_task,
+                      (const char *   )"creat_task",
+                      (unsigned short )128,
+                      (void *         )NULL,
+                      (UBaseType_t    )1,
+                      (TaskHandle_t * )&xTask_creat);
+    if (pdPASS != ret) {
         return -1;
     }
 
     vTaskStartScheduler();
 
-    while(1){
+    while (1) {
     }
 
     return 0;

@@ -86,7 +86,7 @@ typedef struct THREAD_SUSPENSIONS
 {
 	pthread_t hThread;
 	xTaskHandle hTask;
-	unsigned portBASE_TYPE uxCriticalNesting;
+	UBaseType_t uxCriticalNesting;
 } xThreadState;
 /*-----------------------------------------------------------*/
 
@@ -98,13 +98,13 @@ static pthread_mutex_t xSingleThreadMutex = PTHREAD_MUTEX_INITIALIZER;
 static pthread_t hMainThread = ( pthread_t )NULL;
 /*-----------------------------------------------------------*/
 
-static volatile portBASE_TYPE xSentinel = 0;
-static volatile portBASE_TYPE xSchedulerEnd = pdFALSE;
-static volatile portBASE_TYPE xInterruptsEnabled = pdTRUE;
-static volatile portBASE_TYPE xServicingTick = pdFALSE;
-static volatile portBASE_TYPE xPendYield = pdFALSE;
+static volatile BaseType_t xSentinel = 0;
+static volatile BaseType_t xSchedulerEnd = pdFALSE;
+static volatile BaseType_t xInterruptsEnabled = pdTRUE;
+static volatile BaseType_t xServicingTick = pdFALSE;
+static volatile BaseType_t xPendYield = pdFALSE;
 static volatile portLONG lIndexOfLastAddedTask = 0;
-static volatile unsigned portBASE_TYPE uxCriticalNesting;
+static volatile UBaseType_t uxCriticalNesting;
 /*-----------------------------------------------------------*/
 
 /*
@@ -119,8 +119,8 @@ static void prvSuspendThread( pthread_t xThreadId );
 static void prvResumeThread( pthread_t xThreadId );
 static pthread_t prvGetThreadHandle( xTaskHandle hTask );
 static portLONG prvGetFreeThreadState( void );
-static void prvSetTaskCriticalNesting( pthread_t xThreadId, unsigned portBASE_TYPE uxNesting );
-static unsigned portBASE_TYPE prvGetTaskCriticalNesting( pthread_t xThreadId );
+static void prvSetTaskCriticalNesting( pthread_t xThreadId, UBaseType_t uxNesting );
+static UBaseType_t prvGetTaskCriticalNesting( pthread_t xThreadId );
 static void prvDeleteThread( void *xThreadId );
 /*-----------------------------------------------------------*/
 
@@ -199,7 +199,7 @@ void vPortStartFirstTask( void )
 /*
  * See header file for description.
  */
-portBASE_TYPE xPortStartScheduler( void )
+BaseType_t xPortStartScheduler( void )
 {
 int iSignal;
 sigset_t xSignals;
@@ -250,7 +250,7 @@ portLONG lIndex;
 
 void vPortEndScheduler( void )
 {
-portBASE_TYPE xNumberOfThreads;
+BaseType_t xNumberOfThreads;
 	for ( xNumberOfThreads = 0; xNumberOfThreads < MAX_NUMBER_OF_TASKS; xNumberOfThreads++ )
 	{
 		if ( ( pthread_t )NULL != pxThreads[ xNumberOfThreads ].hThread )
@@ -347,15 +347,15 @@ void vPortEnableInterrupts( void )
 }
 /*-----------------------------------------------------------*/
 
-portBASE_TYPE xPortSetInterruptMask( void )
+BaseType_t xPortSetInterruptMask( void )
 {
-portBASE_TYPE xReturn = xInterruptsEnabled;
+BaseType_t xReturn = xInterruptsEnabled;
 	xInterruptsEnabled = pdFALSE;
 	return xReturn;
 }
 /*-----------------------------------------------------------*/
 
-void vPortClearInterruptMask( portBASE_TYPE xMask )
+void vPortClearInterruptMask( BaseType_t xMask )
 {
 	xInterruptsEnabled = xMask;
 }
@@ -548,7 +548,7 @@ sigset_t xSignals;
 
 void prvSuspendThread( pthread_t xThreadId )
 {
-portBASE_TYPE xResult = pthread_mutex_lock( &xSuspendResumeThreadMutex );
+BaseType_t xResult = pthread_mutex_lock( &xSuspendResumeThreadMutex );
 	if ( 0 == xResult )
 	{
 		/* Set-up for the Suspend Signal handler? */
@@ -675,7 +675,7 @@ portLONG lIndex;
 }
 /*-----------------------------------------------------------*/
 
-void prvSetTaskCriticalNesting( pthread_t xThreadId, unsigned portBASE_TYPE uxNesting )
+void prvSetTaskCriticalNesting( pthread_t xThreadId, UBaseType_t uxNesting )
 {
 portLONG lIndex;
 	for ( lIndex = 0; lIndex < MAX_NUMBER_OF_TASKS; lIndex++ )
@@ -689,9 +689,9 @@ portLONG lIndex;
 }
 /*-----------------------------------------------------------*/
 
-unsigned portBASE_TYPE prvGetTaskCriticalNesting( pthread_t xThreadId )
+UBaseType_t prvGetTaskCriticalNesting( pthread_t xThreadId )
 {
-unsigned portBASE_TYPE uxNesting = 0;
+UBaseType_t uxNesting = 0;
 portLONG lIndex;
 	for ( lIndex = 0; lIndex < MAX_NUMBER_OF_TASKS; lIndex++ )
 	{

@@ -57,6 +57,8 @@
 extern "C" {
 #endif
 
+#include <hy_os_type/hy_type.h>
+
 /*-----------------------------------------------------------
  * Port specific definitions.
  *
@@ -68,23 +70,23 @@ extern "C" {
  */
 
 /* Type definitions. */
-#define portCHAR		char
-#define portFLOAT		float
-#define portDOUBLE		double
-#define portLONG		long
-#define portSHORT		short
-#define portSTACK_TYPE  unsigned long
-#define portBASE_TYPE   long
+#define portCHAR        hy_s8_t
+#define portFLOAT       hy_float_t
+#define portDOUBLE      hy_double_t
+#define portLONG        hy_s64_t
+#define portSHORT       hy_s16_t
+#define portSTACK_TYPE  hy_u64_t
+#define portBASE_TYPE   hy_s64_t
 
-typedef portSTACK_TYPE StackType_t;
-typedef long BaseType_t;
-typedef unsigned long UBaseType_t;
+typedef portSTACK_TYPE  StackType_t;
+typedef portBASE_TYPE   BaseType_t;
+typedef hy_u64_t        UBaseType_t;
 
 #if( configUSE_16_BIT_TICKS == 1 )
 	typedef unsigned portSHORT TickType_t;
 	#define portMAX_DELAY ( TickType_t ) 0xffff
 #else
-	typedef unsigned portLONG TickType_t;
+	typedef hy_u64_t    TickType_t;
 	#define portMAX_DELAY ( TickType_t ) 0xffffffff
 #endif
 /*-----------------------------------------------------------*/
@@ -114,8 +116,8 @@ extern void vPortEnableInterrupts( void );
 #define portSET_INTERRUPT_MASK()	( vPortDisableInterrupts() )
 #define portCLEAR_INTERRUPT_MASK()	( vPortEnableInterrupts() )
 
-extern portBASE_TYPE xPortSetInterruptMask( void );
-extern void vPortClearInterruptMask( portBASE_TYPE xMask );
+extern BaseType_t xPortSetInterruptMask( void );
+extern void vPortClearInterruptMask( BaseType_t xMask );
 
 #define portSET_INTERRUPT_MASK_FROM_ISR()		xPortSetInterruptMask()
 #define portCLEAR_INTERRUPT_MASK_FROM_ISR(x)	vPortClearInterruptMask(x)
