@@ -48,12 +48,18 @@ AC_PROG_MAKE_SET
 CHECK_LIBCUNIT
 
 # Checks for header files.
-AC_CHECK_HEADERS([stdlib.h])
+AC_CHECK_HEADERS([limits.h stddef.h stdint.h stdlib.h string.h sys/time.h unistd.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
+AC_TYPE_INT8_T
+AC_TYPE_SIZE_T
+AC_TYPE_UINT16_T
+AC_TYPE_UINT32_T
+AC_TYPE_UINT8_T
 
 # Checks for library functions.
 AC_FUNC_MALLOC
+AC_CHECK_FUNCS([memset])
 
 AC_CONFIG_FILES([Makefile
                  $project_name.pc
@@ -69,37 +75,14 @@ AC_CONFIG_FILES([Makefile
                  build-script/stm32/stm32h7xx/Makefile
                  doc/Makefile
                  example/Makefile
-                 example/freertos/Makefile
-                 example/linux/Makefile
-                 example/mcu/Makefile
-                 example/mcu/stm32/Makefile
-                 example/mcu/stm32/stm32h7xx/Makefile
-                 example/windows/Makefile
                  include/Makefile
-                 include/freertos/Makefile
-                 include/linux/Makefile
-                 include/mcu/Makefile
-                 include/mcu/stm32/Makefile
-                 include/mcu/stm32/stm32h7xx/Makefile
-                 include/windows/Makefile
                  res/Makefile
-                 res/voice/Makefile
-                 res/voice/cn/Makefile
-                 res/voice/en/Makefile
                  src/Makefile
-                 src/freertos/Makefile
-                 src/linux/Makefile
-                 src/mcu/Makefile
-                 src/mcu/stm32/Makefile
-                 src/mcu/stm32/stm32h7xx/Makefile
-                 src/windows/Makefile
-                 test/Makefile
-                 test/freertos/Makefile
-                 test/linux/Makefile
-                 test/mcu/Makefile
-                 test/mcu/stm32/Makefile
-                 test/mcu/stm32/stm32h7xx/Makefile
-                 test/windows/Makefile])
+                 src/portable/GCC/Makefile
+                 src/portable/GCC/Posix/Makefile
+                 src/portable/Makefile
+                 src/portable/MemMang/Makefile
+                 test/Makefile])
 AC_OUTPUT
 
 AC_MSG_RESULT([

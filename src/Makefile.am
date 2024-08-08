@@ -18,7 +18,7 @@
 #     last modified: 05/03 2021 10:35
 # ===============================================================
 
-SUBDIRS = $(run_os)
+SUBDIRS = portable
 
 lib_LTLIBRARIES = lib@project_name@.la
 
@@ -43,8 +43,16 @@ _no_error_com   +=
 _define_com     +=
 
 _include_com    += -I$(top_srcdir)/include
+_include_com    += -I$(top_srcdir)/src/portable/GCC/Posix
 
-_sources_com    +=
+_sources_com    += \
+                   croutine.c \
+                   event_groups.c \
+                   list.c \
+                   queue.c \
+                   stream_buffer.c \
+                   tasks.c \
+                   timers.c
 
 _cppflags_com   += \
                    $(_no_error_com) \
@@ -57,13 +65,14 @@ _cxxflags_com   +=
 
 _ldflags_com    += -version-info @current@:@revision@:@age@
 
-if COMPILE_DEBUG_INFO
-_ldflags_com    += -Wl,-Map,@project_name@.map
-else
-_ldflags_com    += -export-symbols-regex 'Hy*'
-endif
+# if COMPILE_DEBUG_INFO
+# _ldflags_com    += -Wl,-Map,@project_name@.map
+# else
+# _ldflags_com    += -export-symbols-regex 'Hy*'
+# endif
 
-_ldadd_com      += $(top_builddir)/src/$(run_os)/lib$(project_name)_$(run_os).la
+_ldadd_com      += $(top_builddir)/src/portable/GCC/Posix/lib@project_name@_posix.la
+_ldadd_com      += $(top_builddir)/src/portable/MemMang/lib@project_name@_mem_mang.la
 
 _ldadd_com      += $(ldadd_com)
 
