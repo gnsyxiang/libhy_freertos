@@ -60,7 +60,7 @@ that uses task notifications. */
 			if( ( pxStreamBuffer )->xTaskWaitingToSend != NULL )						\
 			{																			\
 				( void ) xTaskNotify( ( pxStreamBuffer )->xTaskWaitingToSend,			\
-									  ( uint32_t ) 0,									\
+									  ( hy_u32_t ) 0,									\
 									  eNoAction );										\
 				( pxStreamBuffer )->xTaskWaitingToSend = NULL;							\
 			}																			\
@@ -79,7 +79,7 @@ that uses task notifications. */
 			if( ( pxStreamBuffer )->xTaskWaitingToSend != NULL )						\
 			{																			\
 				( void ) xTaskNotifyFromISR( ( pxStreamBuffer )->xTaskWaitingToSend,	\
-											 ( uint32_t ) 0,							\
+											 ( hy_u32_t ) 0,							\
 											 eNoAction,									\
 											 pxHigherPriorityTaskWoken );				\
 				( pxStreamBuffer )->xTaskWaitingToSend = NULL;							\
@@ -99,7 +99,7 @@ that uses task notifications. */
 			if( ( pxStreamBuffer )->xTaskWaitingToReceive != NULL )						\
 			{																			\
 				( void ) xTaskNotify( ( pxStreamBuffer )->xTaskWaitingToReceive,		\
-									  ( uint32_t ) 0,									\
+									  ( hy_u32_t ) 0,									\
 									  eNoAction );										\
 				( pxStreamBuffer )->xTaskWaitingToReceive = NULL;						\
 			}																			\
@@ -117,7 +117,7 @@ that uses task notifications. */
 			if( ( pxStreamBuffer )->xTaskWaitingToReceive != NULL )						\
 			{																			\
 				( void ) xTaskNotifyFromISR( ( pxStreamBuffer )->xTaskWaitingToReceive,	\
-											 ( uint32_t ) 0,							\
+											 ( hy_u32_t ) 0,							\
 											 eNoAction,									\
 											 pxHigherPriorityTaskWoken );				\
 				( pxStreamBuffer )->xTaskWaitingToReceive = NULL;						\
@@ -562,7 +562,7 @@ TimeOut_t xTimeOut;
 			taskEXIT_CRITICAL();
 
 			traceBLOCKING_ON_STREAM_BUFFER_SEND( xStreamBuffer );
-			( void ) xTaskNotifyWait( ( uint32_t ) 0, ( uint32_t ) 0, NULL, xTicksToWait );
+			( void ) xTaskNotifyWait( ( hy_u32_t ) 0, ( hy_u32_t ) 0, NULL, xTicksToWait );
 			pxStreamBuffer->xTaskWaitingToSend = NULL;
 
 		} while( xTaskCheckForTimeOut( &xTimeOut, &xTicksToWait ) == pdFALSE );
@@ -768,7 +768,7 @@ size_t xReceivedLength = 0, xBytesAvailable, xBytesToStoreMessageLength;
 		{
 			/* Wait for data to be available. */
 			traceBLOCKING_ON_STREAM_BUFFER_RECEIVE( xStreamBuffer );
-			( void ) xTaskNotifyWait( ( uint32_t ) 0, ( uint32_t ) 0, NULL, xTicksToWait );
+			( void ) xTaskNotifyWait( ( hy_u32_t ) 0, ( hy_u32_t ) 0, NULL, xTicksToWait );
 			pxStreamBuffer->xTaskWaitingToReceive = NULL;
 
 			/* Recheck the data available after blocking. */
@@ -1038,7 +1038,7 @@ UBaseType_t uxSavedInterruptStatus;
 		if( ( pxStreamBuffer )->xTaskWaitingToReceive != NULL )
 		{
 			( void ) xTaskNotifyFromISR( ( pxStreamBuffer )->xTaskWaitingToReceive,
-										 ( uint32_t ) 0,
+										 ( hy_u32_t ) 0,
 										 eNoAction,
 										 pxHigherPriorityTaskWoken );
 			( pxStreamBuffer )->xTaskWaitingToReceive = NULL;
@@ -1068,7 +1068,7 @@ UBaseType_t uxSavedInterruptStatus;
 		if( ( pxStreamBuffer )->xTaskWaitingToSend != NULL )
 		{
 			( void ) xTaskNotifyFromISR( ( pxStreamBuffer )->xTaskWaitingToSend,
-										 ( uint32_t ) 0,
+										 ( hy_u32_t ) 0,
 										 eNoAction,
 										 pxHigherPriorityTaskWoken );
 			( pxStreamBuffer )->xTaskWaitingToSend = NULL;

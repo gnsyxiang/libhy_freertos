@@ -290,7 +290,7 @@ typedef struct tskTaskControlBlock 			/* The old naming convention is used to pr
 	#endif
 
 	#if( configGENERATE_RUN_TIME_STATS == 1 )
-		uint32_t		ulRunTimeCounter;	/*< Stores the amount of time the task has spent in the Running state. */
+		hy_u32_t		ulRunTimeCounter;	/*< Stores the amount of time the task has spent in the Running state. */
 	#endif
 
 	#if ( configUSE_NEWLIB_REENTRANT == 1 )
@@ -305,7 +305,7 @@ typedef struct tskTaskControlBlock 			/* The old naming convention is used to pr
 	#endif
 
 	#if( configUSE_TASK_NOTIFICATIONS == 1 )
-		volatile uint32_t ulNotifiedValue;
+		volatile hy_u32_t ulNotifiedValue;
 		volatile uint8_t ucNotifyState;
 	#endif
 
@@ -389,8 +389,8 @@ PRIVILEGED_DATA static volatile UBaseType_t uxSchedulerSuspended	= ( UBaseType_t
 
 	/* Do not move these variables to function scope as doing so prevents the
 	code working with debuggers that need to remove the static qualifier. */
-	PRIVILEGED_DATA static uint32_t ulTaskSwitchedInTime = 0UL;	/*< Holds the value of a timer/counter the last time a task was switched in. */
-	PRIVILEGED_DATA static uint32_t ulTotalRunTime = 0UL;		/*< Holds the total amount of execution time as defined by the run time counter clock. */
+	PRIVILEGED_DATA static hy_u32_t ulTaskSwitchedInTime = 0UL;	/*< Holds the value of a timer/counter the last time a task was switched in. */
+	PRIVILEGED_DATA static hy_u32_t ulTotalRunTime = 0UL;		/*< Holds the total amount of execution time as defined by the run time counter clock. */
 
 #endif
 
@@ -413,7 +413,7 @@ PRIVILEGED_DATA static volatile UBaseType_t uxSchedulerSuspended	= ( UBaseType_t
 
 #if( configSUPPORT_STATIC_ALLOCATION == 1 )
 
-	extern void vApplicationGetIdleTaskMemory( StaticTask_t **ppxIdleTaskTCBBuffer, StackType_t **ppxIdleTaskStackBuffer, uint32_t *pulIdleTaskStackSize ); /*lint !e526 Symbol not defined as it is an application callback. */
+	extern void vApplicationGetIdleTaskMemory( StaticTask_t **ppxIdleTaskTCBBuffer, StackType_t **ppxIdleTaskStackBuffer, hy_u32_t *pulIdleTaskStackSize ); /*lint !e526 Symbol not defined as it is an application callback. */
 
 #endif
 
@@ -547,7 +547,7 @@ static void prvResetNextTaskUnblockTime( void );
  */
 static void prvInitialiseNewTask( 	TaskFunction_t pxTaskCode,
 									const char * const pcName, 		/*lint !e971 Unqualified char types are allowed for strings and single characters only. */
-									const uint32_t ulStackDepth,
+									const hy_u32_t ulStackDepth,
 									void * const pvParameters,
 									UBaseType_t uxPriority,
 									TaskHandle_t * const pxCreatedTask,
@@ -577,7 +577,7 @@ static void prvAddNewTaskToReadyList( TCB_t *pxNewTCB ) PRIVILEGED_FUNCTION;
 
 	TaskHandle_t xTaskCreateStatic(	TaskFunction_t pxTaskCode,
 									const char * const pcName,		/*lint !e971 Unqualified char types are allowed for strings and single characters only. */
-									const uint32_t ulStackDepth,
+									const hy_u32_t ulStackDepth,
 									void * const pvParameters,
 									UBaseType_t uxPriority,
 									StackType_t * const puxStackBuffer,
@@ -660,7 +660,7 @@ static void prvAddNewTaskToReadyList( TCB_t *pxNewTCB ) PRIVILEGED_FUNCTION;
 
 			prvInitialiseNewTask(	pxTaskDefinition->pvTaskCode,
 									pxTaskDefinition->pcName,
-									( uint32_t ) pxTaskDefinition->usStackDepth,
+									( hy_u32_t ) pxTaskDefinition->usStackDepth,
 									pxTaskDefinition->pvParameters,
 									pxTaskDefinition->uxPriority,
 									pxCreatedTask, pxNewTCB,
@@ -708,7 +708,7 @@ static void prvAddNewTaskToReadyList( TCB_t *pxNewTCB ) PRIVILEGED_FUNCTION;
 
 				prvInitialiseNewTask(	pxTaskDefinition->pvTaskCode,
 										pxTaskDefinition->pcName,
-										( uint32_t ) pxTaskDefinition->usStackDepth,
+										( hy_u32_t ) pxTaskDefinition->usStackDepth,
 										pxTaskDefinition->pvParameters,
 										pxTaskDefinition->uxPriority,
 										pxCreatedTask, pxNewTCB,
@@ -803,7 +803,7 @@ static void prvAddNewTaskToReadyList( TCB_t *pxNewTCB ) PRIVILEGED_FUNCTION;
 			}
 			#endif /* tskSTATIC_AND_DYNAMIC_ALLOCATION_POSSIBLE */
 
-			prvInitialiseNewTask( pxTaskCode, pcName, ( uint32_t ) usStackDepth, pvParameters, uxPriority, pxCreatedTask, pxNewTCB, NULL );
+			prvInitialiseNewTask( pxTaskCode, pcName, ( hy_u32_t ) usStackDepth, pvParameters, uxPriority, pxCreatedTask, pxNewTCB, NULL );
 			prvAddNewTaskToReadyList( pxNewTCB );
 			xReturn = pdPASS;
 		}
@@ -820,7 +820,7 @@ static void prvAddNewTaskToReadyList( TCB_t *pxNewTCB ) PRIVILEGED_FUNCTION;
 
 static void prvInitialiseNewTask( 	TaskFunction_t pxTaskCode,
 									const char * const pcName,		/*lint !e971 Unqualified char types are allowed for strings and single characters only. */
-									const uint32_t ulStackDepth,
+									const hy_u32_t ulStackDepth,
 									void * const pvParameters,
 									UBaseType_t uxPriority,
 									TaskHandle_t * const pxCreatedTask,
@@ -858,7 +858,7 @@ UBaseType_t x;
 	by the port. */
 	#if( portSTACK_GROWTH < 0 )
 	{
-		pxTopOfStack = &( pxNewTCB->pxStack[ ulStackDepth - ( uint32_t ) 1 ] );
+		pxTopOfStack = &( pxNewTCB->pxStack[ ulStackDepth - ( hy_u32_t ) 1 ] );
 		pxTopOfStack = ( StackType_t * ) ( ( ( portPOINTER_SIZE_TYPE ) pxTopOfStack ) & ( ~( ( portPOINTER_SIZE_TYPE ) portBYTE_ALIGNMENT_MASK ) ) ); /*lint !e923 !e9033 !e9078 MISRA exception.  Avoiding casts between pointers and integers is not practical.  Size differences accounted for using portPOINTER_SIZE_TYPE type.  Checked by assert(). */
 
 		/* Check the alignment of the calculated top of stack is correct. */
@@ -881,7 +881,7 @@ UBaseType_t x;
 
 		/* The other extreme of the stack space is required if stack checking is
 		performed. */
-		pxNewTCB->pxEndOfStack = pxNewTCB->pxStack + ( ulStackDepth - ( uint32_t ) 1 );
+		pxNewTCB->pxEndOfStack = pxNewTCB->pxStack + ( ulStackDepth - ( hy_u32_t ) 1 );
 	}
 	#endif /* portSTACK_GROWTH */
 
@@ -1973,7 +1973,7 @@ BaseType_t xReturn;
 	{
 		StaticTask_t *pxIdleTaskTCBBuffer = NULL;
 		StackType_t *pxIdleTaskStackBuffer = NULL;
-		uint32_t ulIdleTaskStackSize;
+		hy_u32_t ulIdleTaskStackSize;
 
 		/* The Idle task is created using user provided RAM - obtain the
 		address of the RAM then create the idle task. */
@@ -2482,7 +2482,7 @@ TCB_t *pxTCB;
 
 #if ( configUSE_TRACE_FACILITY == 1 )
 
-	UBaseType_t uxTaskGetSystemState( TaskStatus_t * const pxTaskStatusArray, const UBaseType_t uxArraySize, uint32_t * const pulTotalRunTime )
+	UBaseType_t uxTaskGetSystemState( TaskStatus_t * const pxTaskStatusArray, const UBaseType_t uxArraySize, hy_u32_t * const pulTotalRunTime )
 	{
 	UBaseType_t uxTask = 0, uxQueue = configMAX_PRIORITIES;
 
@@ -3737,7 +3737,7 @@ static void prvCheckTasksWaitingTermination( void )
 
 	static configSTACK_DEPTH_TYPE prvTaskCheckFreeStackSpace( const uint8_t * pucStackByte )
 	{
-	uint32_t ulCount = 0U;
+	hy_u32_t ulCount = 0U;
 
 		while( *pucStackByte == ( uint8_t ) tskSTACK_FILL_BYTE )
 		{
@@ -3745,7 +3745,7 @@ static void prvCheckTasksWaitingTermination( void )
 			ulCount++;
 		}
 
-		ulCount /= ( uint32_t ) sizeof( StackType_t ); /*lint !e961 Casting is not redundant on smaller architectures. */
+		ulCount /= ( hy_u32_t ) sizeof( StackType_t ); /*lint !e961 Casting is not redundant on smaller architectures. */
 
 		return ( configSTACK_DEPTH_TYPE ) ulCount;
 	}
@@ -4409,7 +4409,7 @@ TCB_t *pxTCB;
 	{
 	TaskStatus_t *pxTaskStatusArray;
 	UBaseType_t uxArraySize, x;
-	uint32_t ulTotalTime, ulStatsAsPercentage;
+	hy_u32_t ulTotalTime, ulStatsAsPercentage;
 
 		#if( configUSE_TRACE_FACILITY != 1 )
 		{
@@ -4563,9 +4563,9 @@ TickType_t uxReturn;
 
 #if( configUSE_TASK_NOTIFICATIONS == 1 )
 
-	uint32_t ulTaskNotifyTake( BaseType_t xClearCountOnExit, TickType_t xTicksToWait )
+	hy_u32_t ulTaskNotifyTake( BaseType_t xClearCountOnExit, TickType_t xTicksToWait )
 	{
-	uint32_t ulReturn;
+	hy_u32_t ulReturn;
 
 		taskENTER_CRITICAL();
 		{
@@ -4611,7 +4611,7 @@ TickType_t uxReturn;
 				}
 				else
 				{
-					pxCurrentTCB->ulNotifiedValue = ulReturn - ( uint32_t ) 1;
+					pxCurrentTCB->ulNotifiedValue = ulReturn - ( hy_u32_t ) 1;
 				}
 			}
 			else
@@ -4631,7 +4631,7 @@ TickType_t uxReturn;
 
 #if( configUSE_TASK_NOTIFICATIONS == 1 )
 
-	BaseType_t xTaskNotifyWait( uint32_t ulBitsToClearOnEntry, uint32_t ulBitsToClearOnExit, uint32_t *pulNotificationValue, TickType_t xTicksToWait )
+	BaseType_t xTaskNotifyWait( hy_u32_t ulBitsToClearOnEntry, hy_u32_t ulBitsToClearOnExit, hy_u32_t *pulNotificationValue, TickType_t xTicksToWait )
 	{
 	BaseType_t xReturn;
 
@@ -4711,7 +4711,7 @@ TickType_t uxReturn;
 
 #if( configUSE_TASK_NOTIFICATIONS == 1 )
 
-	BaseType_t xTaskGenericNotify( TaskHandle_t xTaskToNotify, uint32_t ulValue, eNotifyAction eAction, uint32_t *pulPreviousNotificationValue )
+	BaseType_t xTaskGenericNotify( TaskHandle_t xTaskToNotify, hy_u32_t ulValue, eNotifyAction eAction, hy_u32_t *pulPreviousNotificationValue )
 	{
 	TCB_t * pxTCB;
 	BaseType_t xReturn = pdPASS;
@@ -4825,7 +4825,7 @@ TickType_t uxReturn;
 
 #if( configUSE_TASK_NOTIFICATIONS == 1 )
 
-	BaseType_t xTaskGenericNotifyFromISR( TaskHandle_t xTaskToNotify, uint32_t ulValue, eNotifyAction eAction, uint32_t *pulPreviousNotificationValue, BaseType_t *pxHigherPriorityTaskWoken )
+	BaseType_t xTaskGenericNotifyFromISR( TaskHandle_t xTaskToNotify, hy_u32_t ulValue, eNotifyAction eAction, hy_u32_t *pulPreviousNotificationValue, BaseType_t *pxHigherPriorityTaskWoken )
 	{
 	TCB_t * pxTCB;
 	uint8_t ucOriginalNotifyState;

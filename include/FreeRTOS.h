@@ -293,7 +293,7 @@ extern "C" {
 #endif
 
 #ifndef portPOINTER_SIZE_TYPE
-	#define portPOINTER_SIZE_TYPE uint32_t
+	#define portPOINTER_SIZE_TYPE hy_u32_t
 #endif
 
 /* Remove any unused trace macros. */
@@ -1121,13 +1121,13 @@ typedef struct xSTATIC_TCB
 		void			*pvDummy15[ configNUM_THREAD_LOCAL_STORAGE_POINTERS ];
 	#endif
 	#if ( configGENERATE_RUN_TIME_STATS == 1 )
-		uint32_t		ulDummy16;
+		hy_u32_t		ulDummy16;
 	#endif
 	#if ( configUSE_NEWLIB_REENTRANT == 1 )
 		struct	_reent	xDummy17;
 	#endif
 	#if ( configUSE_TASK_NOTIFICATIONS == 1 )
-		uint32_t 		ulDummy18;
+		hy_u32_t 		ulDummy18;
 		uint8_t 		ucDummy19;
 	#endif
 	#if ( tskSTATIC_AND_DYNAMIC_ALLOCATION_POSSIBLE != 0 )

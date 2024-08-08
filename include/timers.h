@@ -85,7 +85,7 @@ typedef void (*TimerCallbackFunction_t)( TimerHandle_t xTimer );
  * Defines the prototype to which functions used with the
  * xTimerPendFunctionCallFromISR() function must conform.
  */
-typedef void (*PendedFunction_t)( void *, uint32_t );
+typedef void (*PendedFunction_t)( void *, hy_u32_t );
 
 /**
  * TimerHandle_t xTimerCreate( 	const char * const pcTimerName,
@@ -1099,7 +1099,7 @@ TaskHandle_t xTimerGetTimerDaemonTaskHandle( void ) PRIVILEGED_FUNCTION;
 /**
  * BaseType_t xTimerPendFunctionCallFromISR( PendedFunction_t xFunctionToPend,
  *                                          void *pvParameter1,
- *                                          uint32_t ulParameter2,
+ *                                          hy_u32_t ulParameter2,
  *                                          BaseType_t *pxHigherPriorityTaskWoken );
  *
  *
@@ -1148,7 +1148,7 @@ TaskHandle_t xTimerGetTimerDaemonTaskHandle( void ) PRIVILEGED_FUNCTION;
  *
  *	// The callback function that will execute in the context of the daemon task.
  *  // Note callback functions must all use this same prototype.
- *  void vProcessInterface( void *pvParameter1, uint32_t ulParameter2 )
+ *  void vProcessInterface( void *pvParameter1, hy_u32_t ulParameter2 )
  *	{
  *		BaseType_t xInterfaceToService;
  *
@@ -1173,7 +1173,7 @@ TaskHandle_t xTimerGetTimerDaemonTaskHandle( void ) PRIVILEGED_FUNCTION;
  *		// service is passed in the second parameter.  The first parameter is
  *		// not used in this case.
  *		xHigherPriorityTaskWoken = pdFALSE;
- *		xTimerPendFunctionCallFromISR( vProcessInterface, NULL, ( uint32_t ) xInterfaceToService, &xHigherPriorityTaskWoken );
+ *		xTimerPendFunctionCallFromISR( vProcessInterface, NULL, ( hy_u32_t ) xInterfaceToService, &xHigherPriorityTaskWoken );
  *
  *		// If xHigherPriorityTaskWoken is now set to pdTRUE then a context
  *		// switch should be requested.  The macro used is port specific and will
@@ -1184,12 +1184,12 @@ TaskHandle_t xTimerGetTimerDaemonTaskHandle( void ) PRIVILEGED_FUNCTION;
  *	}
  * @endverbatim
  */
-BaseType_t xTimerPendFunctionCallFromISR( PendedFunction_t xFunctionToPend, void *pvParameter1, uint32_t ulParameter2, BaseType_t *pxHigherPriorityTaskWoken ) PRIVILEGED_FUNCTION;
+BaseType_t xTimerPendFunctionCallFromISR( PendedFunction_t xFunctionToPend, void *pvParameter1, hy_u32_t ulParameter2, BaseType_t *pxHigherPriorityTaskWoken ) PRIVILEGED_FUNCTION;
 
  /**
   * BaseType_t xTimerPendFunctionCall( PendedFunction_t xFunctionToPend,
   *                                    void *pvParameter1,
-  *                                    uint32_t ulParameter2,
+  *                                    hy_u32_t ulParameter2,
   *                                    TickType_t xTicksToWait );
   *
   *
@@ -1218,7 +1218,7 @@ BaseType_t xTimerPendFunctionCallFromISR( PendedFunction_t xFunctionToPend, void
   * timer daemon task, otherwise pdFALSE is returned.
   *
   */
-BaseType_t xTimerPendFunctionCall( PendedFunction_t xFunctionToPend, void *pvParameter1, uint32_t ulParameter2, TickType_t xTicksToWait ) PRIVILEGED_FUNCTION;
+BaseType_t xTimerPendFunctionCall( PendedFunction_t xFunctionToPend, void *pvParameter1, hy_u32_t ulParameter2, TickType_t xTicksToWait ) PRIVILEGED_FUNCTION;
 
 /**
  * const char * const pcTimerGetName( TimerHandle_t xTimer );

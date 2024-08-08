@@ -39,7 +39,7 @@
 
 /* MPU versions of tasks.h API functions. */
 BaseType_t MPU_xTaskCreate( TaskFunction_t pxTaskCode, const char * const pcName, const uint16_t usStackDepth, void * const pvParameters, UBaseType_t uxPriority, TaskHandle_t * const pxCreatedTask ) FREERTOS_SYSTEM_CALL;
-TaskHandle_t MPU_xTaskCreateStatic( TaskFunction_t pxTaskCode, const char * const pcName, const uint32_t ulStackDepth, void * const pvParameters, UBaseType_t uxPriority, StackType_t * const puxStackBuffer, StaticTask_t * const pxTaskBuffer ) FREERTOS_SYSTEM_CALL;
+TaskHandle_t MPU_xTaskCreateStatic( TaskFunction_t pxTaskCode, const char * const pcName, const hy_u32_t ulStackDepth, void * const pvParameters, UBaseType_t uxPriority, StackType_t * const puxStackBuffer, StaticTask_t * const pxTaskBuffer ) FREERTOS_SYSTEM_CALL;
 BaseType_t MPU_xTaskCreateRestricted( const TaskParameters_t * const pxTaskDefinition, TaskHandle_t *pxCreatedTask ) FREERTOS_SYSTEM_CALL;
 BaseType_t MPU_xTaskCreateRestrictedStatic( const TaskParameters_t * const pxTaskDefinition, TaskHandle_t *pxCreatedTask ) FREERTOS_SYSTEM_CALL;
 void MPU_vTaskAllocateMPURegions( TaskHandle_t xTask, const MemoryRegion_t * const pxRegions ) FREERTOS_SYSTEM_CALL;
@@ -68,13 +68,13 @@ void MPU_vTaskSetThreadLocalStoragePointer( TaskHandle_t xTaskToSet, BaseType_t 
 void * MPU_pvTaskGetThreadLocalStoragePointer( TaskHandle_t xTaskToQuery, BaseType_t xIndex ) FREERTOS_SYSTEM_CALL;
 BaseType_t MPU_xTaskCallApplicationTaskHook( TaskHandle_t xTask, void *pvParameter ) FREERTOS_SYSTEM_CALL;
 TaskHandle_t MPU_xTaskGetIdleTaskHandle( void ) FREERTOS_SYSTEM_CALL;
-UBaseType_t MPU_uxTaskGetSystemState( TaskStatus_t * const pxTaskStatusArray, const UBaseType_t uxArraySize, uint32_t * const pulTotalRunTime ) FREERTOS_SYSTEM_CALL;
+UBaseType_t MPU_uxTaskGetSystemState( TaskStatus_t * const pxTaskStatusArray, const UBaseType_t uxArraySize, hy_u32_t * const pulTotalRunTime ) FREERTOS_SYSTEM_CALL;
 TickType_t MPU_xTaskGetIdleRunTimeCounter( void ) FREERTOS_SYSTEM_CALL;
 void MPU_vTaskList( char * pcWriteBuffer ) FREERTOS_SYSTEM_CALL;
 void MPU_vTaskGetRunTimeStats( char *pcWriteBuffer ) FREERTOS_SYSTEM_CALL;
-BaseType_t MPU_xTaskGenericNotify( TaskHandle_t xTaskToNotify, uint32_t ulValue, eNotifyAction eAction, uint32_t *pulPreviousNotificationValue ) FREERTOS_SYSTEM_CALL;
-BaseType_t MPU_xTaskNotifyWait( uint32_t ulBitsToClearOnEntry, uint32_t ulBitsToClearOnExit, uint32_t *pulNotificationValue, TickType_t xTicksToWait ) FREERTOS_SYSTEM_CALL;
-uint32_t MPU_ulTaskNotifyTake( BaseType_t xClearCountOnExit, TickType_t xTicksToWait ) FREERTOS_SYSTEM_CALL;
+BaseType_t MPU_xTaskGenericNotify( TaskHandle_t xTaskToNotify, hy_u32_t ulValue, eNotifyAction eAction, hy_u32_t *pulPreviousNotificationValue ) FREERTOS_SYSTEM_CALL;
+BaseType_t MPU_xTaskNotifyWait( hy_u32_t ulBitsToClearOnEntry, hy_u32_t ulBitsToClearOnExit, hy_u32_t *pulNotificationValue, TickType_t xTicksToWait ) FREERTOS_SYSTEM_CALL;
+hy_u32_t MPU_ulTaskNotifyTake( BaseType_t xClearCountOnExit, TickType_t xTicksToWait ) FREERTOS_SYSTEM_CALL;
 BaseType_t MPU_xTaskNotifyStateClear( TaskHandle_t xTask ) FREERTOS_SYSTEM_CALL;
 BaseType_t MPU_xTaskIncrementTick( void ) FREERTOS_SYSTEM_CALL;
 TaskHandle_t MPU_xTaskGetCurrentTaskHandle( void ) FREERTOS_SYSTEM_CALL;
@@ -119,7 +119,7 @@ void * MPU_pvTimerGetTimerID( const TimerHandle_t xTimer ) FREERTOS_SYSTEM_CALL;
 void MPU_vTimerSetTimerID( TimerHandle_t xTimer, void *pvNewID ) FREERTOS_SYSTEM_CALL;
 BaseType_t MPU_xTimerIsTimerActive( TimerHandle_t xTimer ) FREERTOS_SYSTEM_CALL;
 TaskHandle_t MPU_xTimerGetTimerDaemonTaskHandle( void ) FREERTOS_SYSTEM_CALL;
-BaseType_t MPU_xTimerPendFunctionCall( PendedFunction_t xFunctionToPend, void *pvParameter1, uint32_t ulParameter2, TickType_t xTicksToWait ) FREERTOS_SYSTEM_CALL;
+BaseType_t MPU_xTimerPendFunctionCall( PendedFunction_t xFunctionToPend, void *pvParameter1, hy_u32_t ulParameter2, TickType_t xTicksToWait ) FREERTOS_SYSTEM_CALL;
 const char * MPU_pcTimerGetName( TimerHandle_t xTimer ) FREERTOS_SYSTEM_CALL;
 void MPU_vTimerSetReloadMode( TimerHandle_t xTimer, const UBaseType_t uxAutoReload ) FREERTOS_SYSTEM_CALL;
 TickType_t MPU_xTimerGetPeriod( TimerHandle_t xTimer ) FREERTOS_SYSTEM_CALL;

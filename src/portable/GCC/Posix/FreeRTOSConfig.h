@@ -49,7 +49,12 @@
  *----------------------------------------------------------*/
 
 #include <stdint.h>
-extern uint32_t SystemCoreClock;
+
+#include <hy_os_type/hy_type.h>
+
+#define configSTACK_DEPTH_TYPE                  hy_u32_t
+
+extern hy_u32_t SystemCoreClock;
 
 #define configUSE_PREEMPTION					1
 #define configUSE_PORT_OPTIMISED_TASK_SELECTION	0

@@ -103,7 +103,7 @@ typedef struct tmrCallbackParameters
 {
 	PendedFunction_t	pxCallbackFunction;	/* << The callback function to execute. */
 	void *pvParameter1;						/* << The value that will be used as the callback functions first parameter. */
-	uint32_t ulParameter2;					/* << The value that will be used as the callback functions second parameter. */
+	hy_u32_t ulParameter2;					/* << The value that will be used as the callback functions second parameter. */
 } CallbackParameters_t;
 
 /* The structure that contains the two message types, along with an identifier
@@ -151,7 +151,7 @@ PRIVILEGED_DATA static TaskHandle_t xTimerTaskHandle = NULL;
 	following callback function - which enables the application to optionally
 	provide the memory that will be used by the timer task as the task's stack
 	and TCB. */
-	extern void vApplicationGetTimerTaskMemory( StaticTask_t **ppxTimerTaskTCBBuffer, StackType_t **ppxTimerTaskStackBuffer, uint32_t *pulTimerTaskStackSize );
+	extern void vApplicationGetTimerTaskMemory( StaticTask_t **ppxTimerTaskTCBBuffer, StackType_t **ppxTimerTaskStackBuffer, hy_u32_t *pulTimerTaskStackSize );
 
 #endif
 
@@ -240,7 +240,7 @@ BaseType_t xReturn = pdFAIL;
 		{
 			StaticTask_t *pxTimerTaskTCBBuffer = NULL;
 			StackType_t *pxTimerTaskStackBuffer = NULL;
-			uint32_t ulTimerTaskStackSize;
+			hy_u32_t ulTimerTaskStackSize;
 
 			vApplicationGetTimerTaskMemory( &pxTimerTaskTCBBuffer, &pxTimerTaskStackBuffer, &ulTimerTaskStackSize );
 			xTimerTaskHandle = xTaskCreateStatic(	prvTimerTask,
@@ -1022,7 +1022,7 @@ Timer_t * const pxTimer = xTimer;
 
 #if( INCLUDE_xTimerPendFunctionCall == 1 )
 
-	BaseType_t xTimerPendFunctionCallFromISR( PendedFunction_t xFunctionToPend, void *pvParameter1, uint32_t ulParameter2, BaseType_t *pxHigherPriorityTaskWoken )
+	BaseType_t xTimerPendFunctionCallFromISR( PendedFunction_t xFunctionToPend, void *pvParameter1, hy_u32_t ulParameter2, BaseType_t *pxHigherPriorityTaskWoken )
 	{
 	DaemonTaskMessage_t xMessage;
 	BaseType_t xReturn;
@@ -1046,7 +1046,7 @@ Timer_t * const pxTimer = xTimer;
 
 #if( INCLUDE_xTimerPendFunctionCall == 1 )
 
-	BaseType_t xTimerPendFunctionCall( PendedFunction_t xFunctionToPend, void *pvParameter1, uint32_t ulParameter2, TickType_t xTicksToWait )
+	BaseType_t xTimerPendFunctionCall( PendedFunction_t xFunctionToPend, void *pvParameter1, hy_u32_t ulParameter2, TickType_t xTicksToWait )
 	{
 	DaemonTaskMessage_t xMessage;
 	BaseType_t xReturn;
