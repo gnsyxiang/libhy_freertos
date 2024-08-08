@@ -100,7 +100,7 @@ typedef struct corCoRoutineControlBlock
          // This co-routine just delays for a fixed period, then toggles
          // an LED.  Two co-routines are created using this function, so
          // the uxIndex parameter is used to tell the co-routine which
-         // LED to flash and how int32_t to delay.  This assumes xQueue has
+         // LED to flash and how hy_s32_t to delay.  This assumes xQueue has
          // already been created.
          vParTestToggleLED( cLedToFlash[ uxIndex ] );
          crDELAY( xHandle, uxFlashRates[ uxIndex ] );
@@ -185,7 +185,7 @@ void vCoRoutineSchedule( void );
  void vACoRoutine( CoRoutineHandle_t xHandle, UBaseType_t uxIndex )
  {
  // Variables in co-routines must be declared static if they must maintain value across a blocking call.
- static int32_t ulAVariable;
+ static hy_s32_t ulAVariable;
 
      // Must start every co-routine with a call to crSTART();
      crSTART( xHandle );
@@ -216,7 +216,7 @@ void vCoRoutineSchedule( void );
  void vACoRoutine( CoRoutineHandle_t xHandle, UBaseType_t uxIndex )
  {
  // Variables in co-routines must be declared static if they must maintain value across a blocking call.
- static int32_t ulAVariable;
+ static hy_s32_t ulAVariable;
 
      // Must start every co-routine with a call to crSTART();
      crSTART( xHandle );

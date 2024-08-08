@@ -150,7 +150,7 @@ typedef void (*PendedFunction_t)( void *, hy_u32_t );
  * TimerHandle_t xTimers[ NUM_TIMERS ];
  *
  * // An array to hold a count of the number of times each timer expires.
- * int32_t lExpireCounters[ NUM_TIMERS ] = { 0 };
+ * hy_s32_t lExpireCounters[ NUM_TIMERS ] = { 0 };
  *
  * // Define a callback function that will be used by multiple timer instances.
  * // The callback function does nothing but count the number of times the
@@ -158,14 +158,14 @@ typedef void (*PendedFunction_t)( void *, hy_u32_t );
  * // 10 times.
  * void vTimerCallback( TimerHandle_t pxTimer )
  * {
- * int32_t lArrayIndex;
- * const int32_t xMaxExpiryCountBeforeStopping = 10;
+ * hy_s32_t lArrayIndex;
+ * const hy_s32_t xMaxExpiryCountBeforeStopping = 10;
  *
  * 	   // Optionally do something if the pxTimer parameter is NULL.
  * 	   configASSERT( pxTimer );
  *
  *     // Which timer expired?
- *     lArrayIndex = ( int32_t ) pvTimerGetTimerID( pxTimer );
+ *     lArrayIndex = ( hy_s32_t ) pvTimerGetTimerID( pxTimer );
  *
  *     // Increment the number of times that pxTimer has expired.
  *     lExpireCounters[ lArrayIndex ] += 1;
@@ -181,7 +181,7 @@ typedef void (*PendedFunction_t)( void *, hy_u32_t );
  *
  * void main( void )
  * {
- * int32_t x;
+ * hy_s32_t x;
  *
  *     // Create then start some timers.  Starting the timers before the scheduler
  *     // has been started means the timers will start running immediately that
@@ -746,7 +746,7 @@ TaskHandle_t xTimerGetTimerDaemonTaskHandle( void ) PRIVILEGED_FUNCTION;
  *
  * void main( void )
  * {
- * int32_t x;
+ * hy_s32_t x;
  *
  *     // Create then start the one-shot timer that is responsible for turning
  *     // the back-light off if no keys are pressed within a 5 second period.
