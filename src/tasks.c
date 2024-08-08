@@ -320,7 +320,7 @@ typedef struct tskTaskControlBlock 			/* The old naming convention is used to pr
 	#endif
 
 	#if( configUSE_POSIX_ERRNO == 1 )
-		int iTaskErrno;
+		hy_s32_t iTaskErrno;
 	#endif
 
 } tskTCB;
@@ -360,7 +360,7 @@ PRIVILEGED_DATA static List_t xPendingReadyList;						/*< Tasks that have been r
 /* Global POSIX errno. Its value is changed upon context switching to match
 the errno of the currently running task. */
 #if ( configUSE_POSIX_ERRNO == 1 )
-	int FreeRTOS_errno = 0;
+	hy_s32_t FreeRTOS_errno = 0;
 #endif
 
 /* Other file private variables. --------------------------------*/
@@ -848,7 +848,7 @@ UBaseType_t x;
 	#if( tskSET_NEW_STACKS_TO_KNOWN_VALUE == 1 )
 	{
 		/* Fill the stack with a known value to assist debugging. */
-		( void ) memset( pxNewTCB->pxStack, ( int ) tskSTACK_FILL_BYTE, ( size_t ) ulStackDepth * sizeof( StackType_t ) );
+		( void ) memset( pxNewTCB->pxStack, ( hy_s32_t ) tskSTACK_FILL_BYTE, ( size_t ) ulStackDepth * sizeof( StackType_t ) );
 	}
 	#endif /* tskSET_NEW_STACKS_TO_KNOWN_VALUE */
 
@@ -4486,7 +4486,7 @@ TCB_t *pxTCB;
 						}
 						#else
 						{
-							/* sizeof( int ) == sizeof( long ) so a smaller
+							/* sizeof( hy_s32_t ) == sizeof( long ) so a smaller
 							printf() library can be used. */
 							sprintf( pcWriteBuffer, "\t%u\t\t%u%%\r\n", (hy_u32_t) pxTaskStatusArray[ x ].ulRunTimeCounter, (hy_u32_t) ulStatsAsPercentage ); /*lint !e586 sprintf() allowed as this is compiled with many compilers and this is a utility function only - not part of the core kernel implementation. */
 						}
@@ -4502,7 +4502,7 @@ TCB_t *pxTCB;
 						}
 						#else
 						{
-							/* sizeof( int ) == sizeof( long ) so a smaller
+							/* sizeof( hy_s32_t ) == sizeof( long ) so a smaller
 							printf() library can be used. */
 							sprintf( pcWriteBuffer, "\t%u\t\t<1%%\r\n", (hy_u32_t) pxTaskStatusArray[ x ].ulRunTimeCounter ); /*lint !e586 sprintf() allowed as this is compiled with many compilers and this is a utility function only - not part of the core kernel implementation. */
 						}

@@ -112,8 +112,8 @@ static volatile UBaseType_t uxCriticalNesting;
  */
 static void prvSetupTimerInterrupt( void );
 static void *prvWaitForStart( void * pvParams );
-static void prvSuspendSignalHandler(int sig);
-static void prvResumeSignalHandler(int sig);
+static void prvSuspendSignalHandler(hy_s32_t sig);
+static void prvResumeSignalHandler(hy_s32_t sig);
 static void prvSetupSignalsAndSchedulerPolicy( void );
 static void prvSuspendThread( pthread_t xThreadId );
 static void prvResumeThread( pthread_t xThreadId );
@@ -128,7 +128,7 @@ static void prvDeleteThread( void *xThreadId );
  * Exception handlers.
  */
 void vPortYield( void );
-void vPortSystemTickHandler( int sig );
+void vPortSystemTickHandler( hy_s32_t sig );
 
 /*
  * Start first task is a separate function so it can be tested in isolation.
@@ -201,7 +201,7 @@ void vPortStartFirstTask( void )
  */
 BaseType_t xPortStartScheduler( void )
 {
-int iSignal;
+hy_s32_t iSignal;
 sigset_t xSignals;
 sigset_t xSignalToBlock;
 sigset_t xSignalsBlocked;
@@ -394,7 +394,7 @@ portTickType xMicroSeconds = portTICK_RATE_MICROSECONDS;
 }
 /*-----------------------------------------------------------*/
 
-void vPortSystemTickHandler( int sig )
+void vPortSystemTickHandler( hy_s32_t sig )
 {
 pthread_t xTaskToSuspend;
 pthread_t xTaskToResume;
@@ -512,7 +512,7 @@ void * pParams = pxParams->pvParams;
 }
 /*-----------------------------------------------------------*/
 
-void prvSuspendSignalHandler(int sig)
+void prvSuspendSignalHandler(hy_s32_t sig)
 {
 sigset_t xSignals;
 
@@ -563,7 +563,7 @@ BaseType_t xResult = pthread_mutex_lock( &xSuspendResumeThreadMutex );
 }
 /*-----------------------------------------------------------*/
 
-void prvResumeSignalHandler(int sig)
+void prvResumeSignalHandler(hy_s32_t sig)
 {
 	/* Yield the Scheduler to ensure that the yielding thread completes. */
 	if ( 0 == pthread_mutex_lock( &xSingleThreadMutex ) )
@@ -590,9 +590,9 @@ void prvSetupSignalsAndSchedulerPolicy( void )
 {
 /* The following code would allow for configuring the scheduling of this task as a Real-time task.
  * The process would then need to be run with higher privileges for it to take affect.
-int iPolicy;
-int iResult;
-int iSchedulerPriority;
+hy_s32_t iPolicy;
+hy_s32_t iResult;
+hy_s32_t iSchedulerPriority;
 	iResult = pthread_getschedparam( pthread_self(), &iPolicy, &iSchedulerPriority );
 	iResult = pthread_attr_setschedpolicy( &xThreadAttributes, SCHED_FIFO );
 	iPolicy = SCHED_FIFO;

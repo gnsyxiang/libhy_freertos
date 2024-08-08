@@ -1221,7 +1221,7 @@ static void prvInitialiseNewStreamBuffer( StreamBuffer_t * const pxStreamBuffer,
 		memory.  Don't use 0xA5 as that is the stack fill value and could
 		result in confusion as to what is actually being observed. */
 		const BaseType_t xWriteValue = 0x55;
-		configASSERT( memset( pucBuffer, ( int ) xWriteValue, xBufferSizeBytes ) == pucBuffer );
+		configASSERT( memset( pucBuffer, ( hy_s32_t ) xWriteValue, xBufferSizeBytes ) == pucBuffer );
 	} /*lint !e529 !e438 xWriteValue is only used if configASSERT() is defined. */
 	#endif
 

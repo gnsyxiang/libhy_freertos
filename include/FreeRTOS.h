@@ -1138,7 +1138,7 @@ typedef struct xSTATIC_TCB
 		uint8_t ucDummy21;
 	#endif
 	#if ( configUSE_POSIX_ERRNO == 1 )
-		int				iDummy22;
+		hy_s32_t		iDummy22;
 	#endif
 } StaticTask_t;
 
