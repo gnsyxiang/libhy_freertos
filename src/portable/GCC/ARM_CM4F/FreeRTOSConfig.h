@@ -90,6 +90,7 @@
 #define configUSE_PREEMPTION                        1                       ///< 打开任务抢占功能
 #define configMAX_PRIORITIES                        (32)                    ///< 最大任务优先级
 #define configUSE_PORT_OPTIMISED_TASK_SELECTION     1                       ///< 打开硬件计算前导零指令，最大支持32位的数，即configMAX_PRIORITIES 的值不能超过 32，支持的级越多，消耗的资源也越多
+#define configNUM_THREAD_LOCAL_STORAGE_POINTERS     10                      ///< 任务本地储存功能
 
 /*
  * @brief 协程
