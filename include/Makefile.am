@@ -29,7 +29,9 @@ install_includedir      = $(includedir)/$(project_name)
 # ---------------------
 # add necessary content
 # ---------------------
-_no_install_headers_com += \
+_no_install_headers_com +=
+
+_install_headers_com    += \
                            FreeRTOS.h \
                            StackMacros.h \
                            atomic.h \
@@ -47,9 +49,9 @@ _no_install_headers_com += \
                            stack_macros.h \
                            stream_buffer.h \
                            task.h \
-                           timers.h
-
-_install_headers_com    +=
+                           timers.h \
+                           \
+                           hy_freertos.h
 
 # ------------------
 # make install files

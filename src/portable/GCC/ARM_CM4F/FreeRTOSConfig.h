@@ -31,8 +31,6 @@
 #ifndef FREERTOS_CONFIG_H
 #define FREERTOS_CONFIG_H
 
-#include "config.h"
-
 /*-----------------------------------------------------------
  * Application specific definitions.
  *
@@ -128,10 +126,8 @@
 /*
  * @brief 调试监控
  */
-#ifdef HAVE_ENABLE_DEBUG_INFO
 #define configUSE_TRACE_FACILITY                    1                       ///< 启用跟踪功能
 #define configUSE_STATS_FORMATTING_FUNCTIONS        1
-#endif
 #define configQUEUE_REGISTRY_SIZE                   8                       ///< 队列注册表的大小，通过队列注册表可以方便地监控和诊断系统中的队列
 #define configASSERT( x ) if ((x) == 0) {taskDISABLE_INTERRUPTS(); for( ;; );}
 

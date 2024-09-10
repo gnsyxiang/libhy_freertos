@@ -51,7 +51,9 @@ _sources_com    += \
                    queue.c \
                    stream_buffer.c \
                    tasks.c \
-                   timers.c
+                   timers.c \
+                   \
+                   hy_freertos.c
 
 _cppflags_com   += \
                    $(_no_error_com) \
