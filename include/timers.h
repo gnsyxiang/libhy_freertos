@@ -1,6 +1,6 @@
 /*
- * FreeRTOS Kernel V10.2.1
- * Copyright (C) 2019 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
+ * FreeRTOS Kernel V10.3.1
+ * Copyright (C) 2020 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -85,7 +85,7 @@ typedef void (*TimerCallbackFunction_t)( TimerHandle_t xTimer );
  * Defines the prototype to which functions used with the
  * xTimerPendFunctionCallFromISR() function must conform.
  */
-typedef void (*PendedFunction_t)( void *, hy_u32_t );
+typedef void (*PendedFunction_t)( void *, uint32_t );
 
 /**
  * TimerHandle_t xTimerCreate( 	const char * const pcTimerName,
@@ -121,7 +121,7 @@ typedef void (*PendedFunction_t)( void *, hy_u32_t );
  * after 100 ticks, then xTimerPeriodInTicks should be set to 100.
  * Alternatively, if the timer must expire after 500ms, then xPeriod can be set
  * to ( 500 / portTICK_PERIOD_MS ) provided configTICK_RATE_HZ is less than or
- * equal to 1000.
+ * equal to 1000.  Time timer period must be greater than 0.
  *
  * @param uxAutoReload If uxAutoReload is set to pdTRUE then the timer will
  * expire repeatedly with a frequency set by the xTimerPeriodInTicks parameter.
@@ -138,9 +138,9 @@ typedef void (*PendedFunction_t)( void *, hy_u32_t );
  * which is	"void vCallbackFunction( TimerHandle_t xTimer );".
  *
  * @return If the timer is successfully created then a handle to the newly
- * created timer is returned.  If the timer cannot be created (because either
- * there is insufficient FreeRTOS heap remaining to allocate the timer
- * structures, or the timer period was set to 0) then NULL is returned.
+ * created timer is returned.  If the timer cannot be created because there is
+ * insufficient FreeRTOS heap remaining to allocate the timer
+ * structures then NULL is returned.
  *
  * Example usage:
  * @verbatim
@@ -150,7 +150,7 @@ typedef void (*PendedFunction_t)( void *, hy_u32_t );
  * TimerHandle_t xTimers[ NUM_TIMERS ];
  *
  * // An array to hold a count of the number of times each timer expires.
- * hy_s32_t lExpireCounters[ NUM_TIMERS ] = { 0 };
+ * int32_t lExpireCounters[ NUM_TIMERS ] = { 0 };
  *
  * // Define a callback function that will be used by multiple timer instances.
  * // The callback function does nothing but count the number of times the
@@ -158,14 +158,14 @@ typedef void (*PendedFunction_t)( void *, hy_u32_t );
  * // 10 times.
  * void vTimerCallback( TimerHandle_t pxTimer )
  * {
- * hy_s32_t lArrayIndex;
- * const hy_s32_t xMaxExpiryCountBeforeStopping = 10;
+ * int32_t lArrayIndex;
+ * const int32_t xMaxExpiryCountBeforeStopping = 10;
  *
  * 	   // Optionally do something if the pxTimer parameter is NULL.
  * 	   configASSERT( pxTimer );
  *
  *     // Which timer expired?
- *     lArrayIndex = ( hy_s32_t ) pvTimerGetTimerID( pxTimer );
+ *     lArrayIndex = ( int32_t ) pvTimerGetTimerID( pxTimer );
  *
  *     // Increment the number of times that pxTimer has expired.
  *     lExpireCounters[ lArrayIndex ] += 1;
@@ -181,7 +181,7 @@ typedef void (*PendedFunction_t)( void *, hy_u32_t );
  *
  * void main( void )
  * {
- * hy_s32_t x;
+ * int32_t x;
  *
  *     // Create then start some timers.  Starting the timers before the scheduler
  *     // has been started means the timers will start running immediately that
@@ -267,7 +267,7 @@ typedef void (*PendedFunction_t)( void *, hy_u32_t );
  * after 100 ticks, then xTimerPeriodInTicks should be set to 100.
  * Alternatively, if the timer must expire after 500ms, then xPeriod can be set
  * to ( 500 / portTICK_PERIOD_MS ) provided configTICK_RATE_HZ is less than or
- * equal to 1000.
+ * equal to 1000.  The timer period must be greater than 0.
  *
  * @param uxAutoReload If uxAutoReload is set to pdTRUE then the timer will
  * expire repeatedly with a frequency set by the xTimerPeriodInTicks parameter.
@@ -746,7 +746,7 @@ TaskHandle_t xTimerGetTimerDaemonTaskHandle( void ) PRIVILEGED_FUNCTION;
  *
  * void main( void )
  * {
- * hy_s32_t x;
+ * int32_t x;
  *
  *     // Create then start the one-shot timer that is responsible for turning
  *     // the back-light off if no keys are pressed within a 5 second period.
@@ -1099,7 +1099,7 @@ TaskHandle_t xTimerGetTimerDaemonTaskHandle( void ) PRIVILEGED_FUNCTION;
 /**
  * BaseType_t xTimerPendFunctionCallFromISR( PendedFunction_t xFunctionToPend,
  *                                          void *pvParameter1,
- *                                          hy_u32_t ulParameter2,
+ *                                          uint32_t ulParameter2,
  *                                          BaseType_t *pxHigherPriorityTaskWoken );
  *
  *
@@ -1148,7 +1148,7 @@ TaskHandle_t xTimerGetTimerDaemonTaskHandle( void ) PRIVILEGED_FUNCTION;
  *
  *	// The callback function that will execute in the context of the daemon task.
  *  // Note callback functions must all use this same prototype.
- *  void vProcessInterface( void *pvParameter1, hy_u32_t ulParameter2 )
+ *  void vProcessInterface( void *pvParameter1, uint32_t ulParameter2 )
  *	{
  *		BaseType_t xInterfaceToService;
  *
@@ -1173,7 +1173,7 @@ TaskHandle_t xTimerGetTimerDaemonTaskHandle( void ) PRIVILEGED_FUNCTION;
  *		// service is passed in the second parameter.  The first parameter is
  *		// not used in this case.
  *		xHigherPriorityTaskWoken = pdFALSE;
- *		xTimerPendFunctionCallFromISR( vProcessInterface, NULL, ( hy_u32_t ) xInterfaceToService, &xHigherPriorityTaskWoken );
+ *		xTimerPendFunctionCallFromISR( vProcessInterface, NULL, ( uint32_t ) xInterfaceToService, &xHigherPriorityTaskWoken );
  *
  *		// If xHigherPriorityTaskWoken is now set to pdTRUE then a context
  *		// switch should be requested.  The macro used is port specific and will
@@ -1184,12 +1184,12 @@ TaskHandle_t xTimerGetTimerDaemonTaskHandle( void ) PRIVILEGED_FUNCTION;
  *	}
  * @endverbatim
  */
-BaseType_t xTimerPendFunctionCallFromISR( PendedFunction_t xFunctionToPend, void *pvParameter1, hy_u32_t ulParameter2, BaseType_t *pxHigherPriorityTaskWoken ) PRIVILEGED_FUNCTION;
+BaseType_t xTimerPendFunctionCallFromISR( PendedFunction_t xFunctionToPend, void *pvParameter1, uint32_t ulParameter2, BaseType_t *pxHigherPriorityTaskWoken ) PRIVILEGED_FUNCTION;
 
  /**
   * BaseType_t xTimerPendFunctionCall( PendedFunction_t xFunctionToPend,
   *                                    void *pvParameter1,
-  *                                    hy_u32_t ulParameter2,
+  *                                    uint32_t ulParameter2,
   *                                    TickType_t xTicksToWait );
   *
   *
@@ -1218,7 +1218,7 @@ BaseType_t xTimerPendFunctionCallFromISR( PendedFunction_t xFunctionToPend, void
   * timer daemon task, otherwise pdFALSE is returned.
   *
   */
-BaseType_t xTimerPendFunctionCall( PendedFunction_t xFunctionToPend, void *pvParameter1, hy_u32_t ulParameter2, TickType_t xTicksToWait ) PRIVILEGED_FUNCTION;
+BaseType_t xTimerPendFunctionCall( PendedFunction_t xFunctionToPend, void *pvParameter1, uint32_t ulParameter2, TickType_t xTicksToWait ) PRIVILEGED_FUNCTION;
 
 /**
  * const char * const pcTimerGetName( TimerHandle_t xTimer );
@@ -1234,8 +1234,8 @@ const char * pcTimerGetName( TimerHandle_t xTimer ) PRIVILEGED_FUNCTION; /*lint 
 /**
  * void vTimerSetReloadMode( TimerHandle_t xTimer, const UBaseType_t uxAutoReload );
  *
- * Updates a timer to be either an autoreload timer, in which case the timer
- * automatically resets itself each time it expires, or a one shot timer, in
+ * Updates a timer to be either an auto-reload timer, in which case the timer
+ * automatically resets itself each time it expires, or a one-shot timer, in
  * which case the timer will only expire once unless it is manually restarted.
  *
  * @param xTimer The handle of the timer being updated.
@@ -1247,6 +1247,20 @@ const char * pcTimerGetName( TimerHandle_t xTimer ) PRIVILEGED_FUNCTION; /*lint 
  * enter the dormant state after it expires.
  */
 void vTimerSetReloadMode( TimerHandle_t xTimer, const UBaseType_t uxAutoReload ) PRIVILEGED_FUNCTION;
+
+/**
+* UBaseType_t uxTimerGetReloadMode( TimerHandle_t xTimer );
+*
+* Queries a timer to determine if it is an auto-reload timer, in which case the timer
+* automatically resets itself each time it expires, or a one-shot timer, in
+* which case the timer will only expire once unless it is manually restarted.
+*
+* @param xTimer The handle of the timer being queried.
+*
+* @return If the timer is an auto-reload timer then pdTRUE is returned, otherwise
+* pdFALSE is returned.
+*/
+UBaseType_t uxTimerGetReloadMode( TimerHandle_t xTimer ) PRIVILEGED_FUNCTION;
 
 /**
  * TickType_t xTimerGetPeriod( TimerHandle_t xTimer );

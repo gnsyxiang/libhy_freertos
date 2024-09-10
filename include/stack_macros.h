@@ -1,6 +1,6 @@
 /*
- * FreeRTOS Kernel V10.2.1
- * Copyright (C) 2019 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
+ * FreeRTOS Kernel V10.3.1
+ * Copyright (C) 2020 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -79,8 +79,8 @@
 
 	#define taskCHECK_FOR_STACK_OVERFLOW()																\
 	{																									\
-		const hy_u32_t * const pulStack = ( hy_u32_t * ) pxCurrentTCB->pxStack;							\
-		const hy_u32_t ulCheckValue = ( hy_u32_t ) 0xa5a5a5a5;											\
+		const uint32_t * const pulStack = ( uint32_t * ) pxCurrentTCB->pxStack;							\
+		const uint32_t ulCheckValue = ( uint32_t ) 0xa5a5a5a5;											\
 																										\
 		if( ( pulStack[ 0 ] != ulCheckValue ) ||														\
 			( pulStack[ 1 ] != ulCheckValue ) ||														\

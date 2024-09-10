@@ -5,7 +5,7 @@
 # @file    Makefile.am
 # @brief   
 # @author  gnsyxiang <gnsyxiang@163.com>
-# @date    08/08 2024 14:36
+# @date    06/05 2024 11:17
 # @version v0.0.1
 # 
 # @since    note
@@ -13,12 +13,12 @@
 # 
 #     change log:
 #     NO.     Author              Date            Modified
-#     00      zhenquan.qiu        08/08 2024      create the file
+#     00      zhenquan.qiu        06/05 2024      create the file
 # 
-#     last modified: 08/08 2024 14:36
+#     last modified: 06/05 2024 11:17
 # ===============================================================
 
-noinst_LTLIBRARIES = lib@project_name@_mem_mang.la
+noinst_LTLIBRARIES = libfreertos_portable_mem.la
 
 # ------------------
 # defining variables
@@ -40,11 +40,12 @@ _no_error_com   +=
 
 _define_com     +=
 
-_include_com    += -I$(top_srcdir)/include
-_include_com    += -I$(top_srcdir)/src/portable/GCC/Posix
-
-_sources_com    += \
-                   heap_3.c
+if COMPILE_SELECT_CHIP_STM32H7XX
+_include_com    += \
+                   -I$(top_srcdir)/include \
+                   -I$(top_srcdir)/src/portable/GCC/$(porting_platform)
+_sources_com    += heap_4.c
+endif
 
 _cppflags_com   += \
                    $(_no_error_com) \
@@ -57,9 +58,9 @@ _cxxflags_com   +=
 
 _ldadd_com      += $(ldadd_com)
 
-lib@project_name@_mem_mang_la_SOURCES  = $(_sources_com)
-lib@project_name@_mem_mang_la_CPPFLAGS = $(_cppflags_com)
-lib@project_name@_mem_mang_la_CFLAGS   = $(_cflags_com)
-lib@project_name@_mem_mang_la_CXXFLAGS = $(_cxxflags_com)
-lib@project_name@_mem_mang_la_LDFLAGS  = $(_ldflags_com)
-lib@project_name@_mem_mang_la_LIBADD   = $(_ldadd_com)
+libfreertos_portable_mem_la_SOURCES     = $(_sources_com)
+libfreertos_portable_mem_la_CPPFLAGS    = $(_cppflags_com)
+libfreertos_portable_mem_la_CFLAGS      = $(_cflags_com)
+libfreertos_portable_mem_la_CXXFLAGS    = $(_cxxflags_com)
+libfreertos_portable_mem_la_LDFLAGS     = $(_ldflags_com)
+libfreertos_portable_mem_la_LIBADD      = $(_ldadd_com)

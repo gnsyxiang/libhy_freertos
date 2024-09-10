@@ -1,6 +1,6 @@
 /*
- * FreeRTOS Kernel V10.2.1
- * Copyright (C) 2019 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
+ * FreeRTOS Kernel V10.3.1
+ * Copyright (C) 2020 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -241,8 +241,24 @@ extern "C" {
 	#define configASSERT_DEFINED 1
 #endif
 
+/* configPRECONDITION should be defined as configASSERT.
+The CBMC proofs need a way to track assumptions and assertions.
+A configPRECONDITION statement should express an implicit invariant or
+assumption made.  A configASSERT statement should express an invariant that must
+hold explicit before calling the code. */
+#ifndef configPRECONDITION
+	#define configPRECONDITION( X ) configASSERT(X)
+	#define configPRECONDITION_DEFINED 0
+#else
+	#define configPRECONDITION_DEFINED 1
+#endif
+
 #ifndef portMEMORY_BARRIER
 	#define portMEMORY_BARRIER()
+#endif
+
+#ifndef portSOFTWARE_BARRIER
+	#define portSOFTWARE_BARRIER()
 #endif
 
 /* The timers module relies on xTaskGetSchedulerState(). */
@@ -293,7 +309,7 @@ extern "C" {
 #endif
 
 #ifndef portPOINTER_SIZE_TYPE
-	#define portPOINTER_SIZE_TYPE hy_u32_t
+	#define portPOINTER_SIZE_TYPE uint32_t
 #endif
 
 /* Remove any unused trace macros. */
@@ -937,6 +953,7 @@ V8 if desired. */
 	#define pcTimerGetTimerName pcTimerGetName
 	#define pcQueueGetQueueName pcQueueGetName
 	#define vTaskGetTaskInfo vTaskGetInfo
+	#define xTaskGetIdleRunTimeCounter ulTaskGetIdleRunTimeCounter
 
 	/* Backward compatibility within the scheduler code only - these definitions
 	are not really required but are included for completeness. */
@@ -1121,13 +1138,13 @@ typedef struct xSTATIC_TCB
 		void			*pvDummy15[ configNUM_THREAD_LOCAL_STORAGE_POINTERS ];
 	#endif
 	#if ( configGENERATE_RUN_TIME_STATS == 1 )
-		hy_u32_t		ulDummy16;
+		uint32_t		ulDummy16;
 	#endif
 	#if ( configUSE_NEWLIB_REENTRANT == 1 )
 		struct	_reent	xDummy17;
 	#endif
 	#if ( configUSE_TASK_NOTIFICATIONS == 1 )
-		hy_u32_t 		ulDummy18;
+		uint32_t 		ulDummy18;
 		uint8_t 		ucDummy19;
 	#endif
 	#if ( tskSTATIC_AND_DYNAMIC_ALLOCATION_POSSIBLE != 0 )
@@ -1138,7 +1155,7 @@ typedef struct xSTATIC_TCB
 		uint8_t ucDummy21;
 	#endif
 	#if ( configUSE_POSIX_ERRNO == 1 )
-		hy_s32_t		iDummy22;
+		int				iDummy22;
 	#endif
 } StaticTask_t;
 

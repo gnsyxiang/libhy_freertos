@@ -5,20 +5,20 @@
 # @file    Makefile.am
 # @brief   
 # @author  gnsyxiang <gnsyxiang@163.com>
-# @date    06/05 2024 09:41
+# @date    06/05 2024 14:48
 # @version v0.0.1
 # 
 # @since    note
 # @note     note
 # 
 #     change log:
-#     NO.     Author              Date            Modified 00      zhenquan.qiu        06/05 2024      create the file
-#     last modified: 06/05 2024 09:41
+#     NO.     Author              Date            Modified
+#     00      zhenquan.qiu        06/05 2024      create the file
+# 
+#     last modified: 06/05 2024 14:48
 # ===============================================================
 
-SUBDIRS = portable
-
-noinst_LTLIBRARIES = libfreertos-kernel.la
+noinst_LTLIBRARIES = libfreertos_portable_gcc_posix_utils.la
 
 # ------------------
 # defining variables
@@ -41,17 +41,10 @@ _no_error_com   +=
 _define_com     +=
 
 _include_com    += \
-                   -I$(top_srcdir)/include \
-                   -I$(top_srcdir)/src/portable/GCC/$(porting_platform)
+                   -I$(top_srcdir)/src/$(run_os)/FreeRTOS-Kernel/portable/GCC/POSIX/utils
 
 _sources_com    += \
-                   croutine.c \
-                   event_groups.c \
-                   list.c \
-                   queue.c \
-                   stream_buffer.c \
-                   tasks.c \
-                   timers.c
+                   wait_for_event.c
 
 _cppflags_com   += \
                    $(_no_error_com) \
@@ -64,9 +57,9 @@ _cxxflags_com   +=
 
 _ldadd_com      += $(ldadd_com)
 
-libfreertos_kernel_la_SOURCES   = $(_sources_com)
-libfreertos_kernel_la_CPPFLAGS  = $(_cppflags_com)
-libfreertos_kernel_la_CFLAGS    = $(_cflags_com)
-libfreertos_kernel_la_CXXFLAGS  = $(_cxxflags_com)
-libfreertos_kernel_la_LDFLAGS   = $(_ldflags_com)
-libfreertos_kernel_la_LIBADD    = $(_ldadd_com)
+libfreertos_portable_gcc_posix_utils_la_SOURCES     = $(_sources_com)
+libfreertos_portable_gcc_posix_utils_la_CPPFLAGS    = $(_cppflags_com)
+libfreertos_portable_gcc_posix_utils_la_CFLAGS      = $(_cflags_com)
+libfreertos_portable_gcc_posix_utils_la_CXXFLAGS    = $(_cxxflags_com)
+libfreertos_portable_gcc_posix_utils_la_LDFLAGS     = $(_ldflags_com)
+libfreertos_portable_gcc_posix_utils_la_LIBADD      = $(_ldadd_com)

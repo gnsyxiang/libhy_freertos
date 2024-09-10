@@ -1,6 +1,6 @@
 /*
- * FreeRTOS Kernel V10.2.1
- * Copyright (C) 2019 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
+ * FreeRTOS Kernel V10.3.1
+ * Copyright (C) 2020 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -100,7 +100,7 @@ typedef struct corCoRoutineControlBlock
          // This co-routine just delays for a fixed period, then toggles
          // an LED.  Two co-routines are created using this function, so
          // the uxIndex parameter is used to tell the co-routine which
-         // LED to flash and how hy_s32_t to delay.  This assumes xQueue has
+         // LED to flash and how int32_t to delay.  This assumes xQueue has
          // already been created.
          vParTestToggleLED( cLedToFlash[ uxIndex ] );
          crDELAY( xHandle, uxFlashRates[ uxIndex ] );
@@ -157,7 +157,7 @@ BaseType_t xCoRoutineCreate( crCOROUTINE_CODE pxCoRoutineCode, UBaseType_t uxPri
  }
 
  // Alternatively, if you do not require any other part of the idle task to
- // execute, the idle task hook can call vCoRoutineScheduler() within an
+ // execute, the idle task hook can call vCoRoutineSchedule() within an
  // infinite loop.
  void vApplicationIdleHook( void )
  {
@@ -185,7 +185,7 @@ void vCoRoutineSchedule( void );
  void vACoRoutine( CoRoutineHandle_t xHandle, UBaseType_t uxIndex )
  {
  // Variables in co-routines must be declared static if they must maintain value across a blocking call.
- static hy_s32_t ulAVariable;
+ static int32_t ulAVariable;
 
      // Must start every co-routine with a call to crSTART();
      crSTART( xHandle );
@@ -216,7 +216,7 @@ void vCoRoutineSchedule( void );
  void vACoRoutine( CoRoutineHandle_t xHandle, UBaseType_t uxIndex )
  {
  // Variables in co-routines must be declared static if they must maintain value across a blocking call.
- static hy_s32_t ulAVariable;
+ static int32_t ulAVariable;
 
      // Must start every co-routine with a call to crSTART();
      crSTART( xHandle );

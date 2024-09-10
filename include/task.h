@@ -1,6 +1,6 @@
 /*
- * FreeRTOS Kernel V10.2.1
- * Copyright (C) 2019 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
+ * FreeRTOS Kernel V10.3.1
+ * Copyright (C) 2020 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -29,8 +29,6 @@
 #ifndef INC_TASK_H
 #define INC_TASK_H
 
-#include "FreeRTOS.h"
-
 #ifndef INC_FREERTOS_H
 	#error "include FreeRTOS.h must appear in source files before include task.h"
 #endif
@@ -45,10 +43,10 @@ extern "C" {
  * MACROS AND DEFINITIONS
  *----------------------------------------------------------*/
 
-#define tskKERNEL_VERSION_NUMBER "V10.2.0"
+#define tskKERNEL_VERSION_NUMBER "V10.3.1"
 #define tskKERNEL_VERSION_MAJOR 10
-#define tskKERNEL_VERSION_MINOR 2
-#define tskKERNEL_VERSION_BUILD 0
+#define tskKERNEL_VERSION_MINOR 3
+#define tskKERNEL_VERSION_BUILD 1
 
 /* MPU region parameters passed in ulParameters
  * of MemoryRegion_t struct. */
@@ -113,8 +111,8 @@ typedef struct xTIME_OUT
 typedef struct xMEMORY_REGION
 {
 	void *pvBaseAddress;
-	hy_u32_t ulLengthInBytes;
-	hy_u32_t ulParameters;
+	uint32_t ulLengthInBytes;
+	uint32_t ulParameters;
 } MemoryRegion_t;
 
 /*
@@ -144,7 +142,7 @@ typedef struct xTASK_STATUS
 	eTaskState eCurrentState;		/* The state in which the task existed when the structure was populated. */
 	UBaseType_t uxCurrentPriority;	/* The priority at which the task was running (may be inherited) when the structure was populated. */
 	UBaseType_t uxBasePriority;		/* The priority to which the task will return if the task's current priority has been inherited to avoid unbounded priority inversion when obtaining a mutex.  Only valid if configUSE_MUTEXES is defined as 1 in FreeRTOSConfig.h. */
-	hy_u32_t ulRunTimeCounter;		/* The total run time allocated to the task so far, as defined by the run time stats clock.  See http://www.freertos.org/rtos-run-time-stats.html.  Only valid when configGENERATE_RUN_TIME_STATS is defined as 1 in FreeRTOSConfig.h. */
+	uint32_t ulRunTimeCounter;		/* The total run time allocated to the task so far, as defined by the run time stats clock.  See http://www.freertos.org/rtos-run-time-stats.html.  Only valid when configGENERATE_RUN_TIME_STATS is defined as 1 in FreeRTOSConfig.h. */
 	StackType_t *pxStackBase;		/* Points to the lowest address of the task's stack area. */
 	configSTACK_DEPTH_TYPE usStackHighWaterMark;	/* The minimum amount of stack space that has remained for the task since the task was created.  The closer this value is to zero the closer the task has come to overflowing its stack. */
 } TaskStatus_t;
@@ -316,13 +314,13 @@ is used in assert() statements. */
 	 // an automatic stack variable it might no longer exist, or at least have been corrupted, by the time
 	 // the new task attempts to access it.
 	 xTaskCreate( vTaskCode, "NAME", STACK_SIZE, &ucParameterToPass, tskIDLE_PRIORITY, &xHandle );
-     configASSERT( xHandle );
+	 configASSERT( xHandle );
 
 	 // Use the handle to delete the task.
-     if( xHandle != NULL )
-     {
-	     vTaskDelete( xHandle );
-     }
+	 if( xHandle != NULL )
+	 {
+	 	vTaskDelete( xHandle );
+	 }
  }
    </pre>
  * \defgroup xTaskCreate xTaskCreate
@@ -342,7 +340,7 @@ is used in assert() statements. */
  *<pre>
  TaskHandle_t xTaskCreateStatic( TaskFunction_t pvTaskCode,
 								 const char * const pcName,
-								 hy_u32_t ulStackDepth,
+								 uint32_t ulStackDepth,
 								 void *pvParameters,
 								 UBaseType_t uxPriority,
 								 StackType_t *pxStackBuffer,
@@ -412,7 +410,7 @@ is used in assert() statements. */
     {
         // The parameter value is expected to be 1 as 1 is passed in the
         // pvParameters value in the call to xTaskCreateStatic().
-        configASSERT( ( hy_u32_t ) pvParameters == 1UL );
+        configASSERT( ( uint32_t ) pvParameters == 1UL );
 
         for( ;; )
         {
@@ -447,7 +445,7 @@ is used in assert() statements. */
 #if( configSUPPORT_STATIC_ALLOCATION == 1 )
 	TaskHandle_t xTaskCreateStatic(	TaskFunction_t pxTaskCode,
 									const char * const pcName, /*lint !e971 Unqualified char types are allowed for strings and single characters only. */
-									const hy_u32_t ulStackDepth,
+									const uint32_t ulStackDepth,
 									void * const pvParameters,
 									UBaseType_t uxPriority,
 									StackType_t * const puxStackBuffer,
@@ -500,9 +498,9 @@ static const TaskParameters_t xCheckTaskParameters =
 	// for full information.
 	{
 		// Base address					Length	Parameters
-        { cReadWriteArray,				32,		portMPU_REGION_READ_WRITE },
-        { cReadOnlyArray,				32,		portMPU_REGION_READ_ONLY },
-        { cPrivilegedOnlyAccessArray,	128,	portMPU_REGION_PRIVILEGED_READ_WRITE }
+		{ cReadWriteArray,				32,		portMPU_REGION_READ_WRITE },
+		{ cReadOnlyArray,				32,		portMPU_REGION_READ_ONLY },
+		{ cPrivilegedOnlyAccessArray,	128,	portMPU_REGION_PRIVILEGED_READ_WRITE }
 	}
 };
 
@@ -586,9 +584,9 @@ static const TaskParameters_t xCheckTaskParameters =
 	// for full information.
 	{
 		// Base address					Length	Parameters
-        { cReadWriteArray,				32,		portMPU_REGION_READ_WRITE },
-        { cReadOnlyArray,				32,		portMPU_REGION_READ_ONLY },
-        { cPrivilegedOnlyAccessArray,	128,	portMPU_REGION_PRIVILEGED_READ_WRITE }
+		{ cReadWriteArray,				32,		portMPU_REGION_READ_WRITE },
+		{ cReadOnlyArray,				32,		portMPU_REGION_READ_ONLY },
+		{ cPrivilegedOnlyAccessArray,	128,	portMPU_REGION_PRIVILEGED_READ_WRITE }
 	}
 
 	&xTaskBuffer; // Holds the task's data structure.
@@ -832,6 +830,11 @@ void vTaskDelayUntil( TickType_t * const pxPreviousWakeTime, const TickType_t xT
  * that is in the Blocked state is used in a call to xTaskAbortDelay() then the
  * task will leave the Blocked state, and return from whichever function call
  * placed the task into the Blocked state.
+ *
+ * There is no 'FromISR' version of this function as an interrupt would need to
+ * know which object a task was blocked on in order to know which actions to
+ * take.  For example, if the task was blocked on a queue the interrupt handler
+ * would then need to know if the queue was locked.
  *
  * @param xTask The handle of the task to remove from the Blocked state.
  *
@@ -1581,7 +1584,7 @@ TaskHandle_t xTaskGetIdleTaskHandle( void ) PRIVILEGED_FUNCTION;
 	{
 	TaskStatus_t *pxTaskStatusArray;
 	volatile UBaseType_t uxArraySize, x;
-	hy_u32_t ulTotalRunTime, ulStatsAsPercentage;
+	uint32_t ulTotalRunTime, ulStatsAsPercentage;
 
 		// Make sure the write buffer does not contain a string.
 		*pcWriteBuffer = 0x00;
@@ -1635,7 +1638,7 @@ TaskHandle_t xTaskGetIdleTaskHandle( void ) PRIVILEGED_FUNCTION;
 	}
 	</pre>
  */
-UBaseType_t uxTaskGetSystemState( TaskStatus_t * const pxTaskStatusArray, const UBaseType_t uxArraySize, hy_u32_t * const pulTotalRunTime ) PRIVILEGED_FUNCTION;
+UBaseType_t uxTaskGetSystemState( TaskStatus_t * const pxTaskStatusArray, const UBaseType_t uxArraySize, uint32_t * const pulTotalRunTime ) PRIVILEGED_FUNCTION;
 
 /**
  * task. h
@@ -1740,7 +1743,7 @@ void vTaskGetRunTimeStats( char *pcWriteBuffer ) PRIVILEGED_FUNCTION; /*lint !e9
 
 /**
 * task. h
-* <PRE>TickType_t xTaskGetIdleRunTimeCounter( void );</PRE>
+* <PRE>uint32_t ulTaskGetIdleRunTimeCounter( void );</PRE>
 *
 * configGENERATE_RUN_TIME_STATS and configUSE_STATS_FORMATTING_FUNCTIONS
 * must both be defined as 1 for this function to be available.  The application
@@ -1755,7 +1758,7 @@ void vTaskGetRunTimeStats( char *pcWriteBuffer ) PRIVILEGED_FUNCTION; /*lint !e9
 * of the accumulated time value depends on the frequency of the timer
 * configured by the portCONFIGURE_TIMER_FOR_RUN_TIME_STATS() macro.
 * While uxTaskGetSystemState() and vTaskGetRunTimeStats() writes the total
-* execution time of each task into a buffer, xTaskGetIdleRunTimeCounter()
+* execution time of each task into a buffer, ulTaskGetIdleRunTimeCounter()
 * returns the total execution time of just the idle task.
 *
 * @return The total run time of the idle task.  This is the amount of time the
@@ -1763,20 +1766,20 @@ void vTaskGetRunTimeStats( char *pcWriteBuffer ) PRIVILEGED_FUNCTION; /*lint !e9
 * frequency configured using the portCONFIGURE_TIMER_FOR_RUN_TIME_STATS() and
 * portGET_RUN_TIME_COUNTER_VALUE() macros.
 *
-* \defgroup xTaskGetIdleRunTimeCounter xTaskGetIdleRunTimeCounter
+* \defgroup ulTaskGetIdleRunTimeCounter ulTaskGetIdleRunTimeCounter
 * \ingroup TaskUtils
 */
-TickType_t xTaskGetIdleRunTimeCounter( void ) PRIVILEGED_FUNCTION;
+uint32_t ulTaskGetIdleRunTimeCounter( void ) PRIVILEGED_FUNCTION;
 
 /**
  * task. h
- * <PRE>BaseType_t xTaskNotify( TaskHandle_t xTaskToNotify, hy_u32_t ulValue, eNotifyAction eAction );</PRE>
+ * <PRE>BaseType_t xTaskNotify( TaskHandle_t xTaskToNotify, uint32_t ulValue, eNotifyAction eAction );</PRE>
  *
  * configUSE_TASK_NOTIFICATIONS must be undefined or defined as 1 for this
  * function to be available.
  *
  * When configUSE_TASK_NOTIFICATIONS is set to one each task has its own private
- * "notification value", which is a 32-bit unsigned integer (hy_u32_t).
+ * "notification value", which is a 32-bit unsigned integer (uint32_t).
  *
  * Events can be sent to a task using an intermediary object.  Examples of such
  * objects are queues, semaphores, mutexes and event groups.  Task notifications
@@ -1847,19 +1850,19 @@ TickType_t xTaskGetIdleRunTimeCounter( void ) PRIVILEGED_FUNCTION;
  * \defgroup xTaskNotify xTaskNotify
  * \ingroup TaskNotifications
  */
-BaseType_t xTaskGenericNotify( TaskHandle_t xTaskToNotify, hy_u32_t ulValue, eNotifyAction eAction, hy_u32_t *pulPreviousNotificationValue ) PRIVILEGED_FUNCTION;
+BaseType_t xTaskGenericNotify( TaskHandle_t xTaskToNotify, uint32_t ulValue, eNotifyAction eAction, uint32_t *pulPreviousNotificationValue ) PRIVILEGED_FUNCTION;
 #define xTaskNotify( xTaskToNotify, ulValue, eAction ) xTaskGenericNotify( ( xTaskToNotify ), ( ulValue ), ( eAction ), NULL )
 #define xTaskNotifyAndQuery( xTaskToNotify, ulValue, eAction, pulPreviousNotifyValue ) xTaskGenericNotify( ( xTaskToNotify ), ( ulValue ), ( eAction ), ( pulPreviousNotifyValue ) )
 
 /**
  * task. h
- * <PRE>BaseType_t xTaskNotifyFromISR( TaskHandle_t xTaskToNotify, hy_u32_t ulValue, eNotifyAction eAction, BaseType_t *pxHigherPriorityTaskWoken );</PRE>
+ * <PRE>BaseType_t xTaskNotifyFromISR( TaskHandle_t xTaskToNotify, uint32_t ulValue, eNotifyAction eAction, BaseType_t *pxHigherPriorityTaskWoken );</PRE>
  *
  * configUSE_TASK_NOTIFICATIONS must be undefined or defined as 1 for this
  * function to be available.
  *
  * When configUSE_TASK_NOTIFICATIONS is set to one each task has its own private
- * "notification value", which is a 32-bit unsigned integer (hy_u32_t).
+ * "notification value", which is a 32-bit unsigned integer (uint32_t).
  *
  * A version of xTaskNotify() that can be used from an interrupt service routine
  * (ISR).
@@ -1938,19 +1941,19 @@ BaseType_t xTaskGenericNotify( TaskHandle_t xTaskToNotify, hy_u32_t ulValue, eNo
  * \defgroup xTaskNotify xTaskNotify
  * \ingroup TaskNotifications
  */
-BaseType_t xTaskGenericNotifyFromISR( TaskHandle_t xTaskToNotify, hy_u32_t ulValue, eNotifyAction eAction, hy_u32_t *pulPreviousNotificationValue, BaseType_t *pxHigherPriorityTaskWoken ) PRIVILEGED_FUNCTION;
+BaseType_t xTaskGenericNotifyFromISR( TaskHandle_t xTaskToNotify, uint32_t ulValue, eNotifyAction eAction, uint32_t *pulPreviousNotificationValue, BaseType_t *pxHigherPriorityTaskWoken ) PRIVILEGED_FUNCTION;
 #define xTaskNotifyFromISR( xTaskToNotify, ulValue, eAction, pxHigherPriorityTaskWoken ) xTaskGenericNotifyFromISR( ( xTaskToNotify ), ( ulValue ), ( eAction ), NULL, ( pxHigherPriorityTaskWoken ) )
 #define xTaskNotifyAndQueryFromISR( xTaskToNotify, ulValue, eAction, pulPreviousNotificationValue, pxHigherPriorityTaskWoken ) xTaskGenericNotifyFromISR( ( xTaskToNotify ), ( ulValue ), ( eAction ), ( pulPreviousNotificationValue ), ( pxHigherPriorityTaskWoken ) )
 
 /**
  * task. h
- * <PRE>BaseType_t xTaskNotifyWait( hy_u32_t ulBitsToClearOnEntry, hy_u32_t ulBitsToClearOnExit, hy_u32_t *pulNotificationValue, TickType_t xTicksToWait );</pre>
+ * <PRE>BaseType_t xTaskNotifyWait( uint32_t ulBitsToClearOnEntry, uint32_t ulBitsToClearOnExit, uint32_t *pulNotificationValue, TickType_t xTicksToWait );</pre>
  *
  * configUSE_TASK_NOTIFICATIONS must be undefined or defined as 1 for this
  * function to be available.
  *
  * When configUSE_TASK_NOTIFICATIONS is set to one each task has its own private
- * "notification value", which is a 32-bit unsigned integer (hy_u32_t).
+ * "notification value", which is a 32-bit unsigned integer (uint32_t).
  *
  * Events can be sent to a task using an intermediary object.  Examples of such
  * objects are queues, semaphores, mutexes and event groups.  Task notifications
@@ -2015,7 +2018,7 @@ BaseType_t xTaskGenericNotifyFromISR( TaskHandle_t xTaskToNotify, hy_u32_t ulVal
  * \defgroup xTaskNotifyWait xTaskNotifyWait
  * \ingroup TaskNotifications
  */
-BaseType_t xTaskNotifyWait( hy_u32_t ulBitsToClearOnEntry, hy_u32_t ulBitsToClearOnExit, hy_u32_t *pulNotificationValue, TickType_t xTicksToWait ) PRIVILEGED_FUNCTION;
+BaseType_t xTaskNotifyWait( uint32_t ulBitsToClearOnEntry, uint32_t ulBitsToClearOnExit, uint32_t *pulNotificationValue, TickType_t xTicksToWait ) PRIVILEGED_FUNCTION;
 
 /**
  * task. h
@@ -2025,7 +2028,7 @@ BaseType_t xTaskNotifyWait( hy_u32_t ulBitsToClearOnEntry, hy_u32_t ulBitsToClea
  * to be available.
  *
  * When configUSE_TASK_NOTIFICATIONS is set to one each task has its own private
- * "notification value", which is a 32-bit unsigned integer (hy_u32_t).
+ * "notification value", which is a 32-bit unsigned integer (uint32_t).
  *
  * Events can be sent to a task using an intermediary object.  Examples of such
  * objects are queues, semaphores, mutexes and event groups.  Task notifications
@@ -2071,7 +2074,7 @@ BaseType_t xTaskNotifyWait( hy_u32_t ulBitsToClearOnEntry, hy_u32_t ulBitsToClea
  * to be available.
  *
  * When configUSE_TASK_NOTIFICATIONS is set to one each task has its own private
- * "notification value", which is a 32-bit unsigned integer (hy_u32_t).
+ * "notification value", which is a 32-bit unsigned integer (uint32_t).
  *
  * A version of xTaskNotifyGive() that can be called from an interrupt service
  * routine (ISR).
@@ -2120,13 +2123,13 @@ void vTaskNotifyGiveFromISR( TaskHandle_t xTaskToNotify, BaseType_t *pxHigherPri
 
 /**
  * task. h
- * <PRE>hy_u32_t ulTaskNotifyTake( BaseType_t xClearCountOnExit, TickType_t xTicksToWait );</pre>
+ * <PRE>uint32_t ulTaskNotifyTake( BaseType_t xClearCountOnExit, TickType_t xTicksToWait );</pre>
  *
  * configUSE_TASK_NOTIFICATIONS must be undefined or defined as 1 for this
  * function to be available.
  *
  * When configUSE_TASK_NOTIFICATIONS is set to one each task has its own private
- * "notification value", which is a 32-bit unsigned integer (hy_u32_t).
+ * "notification value", which is a 32-bit unsigned integer (uint32_t).
  *
  * Events can be sent to a task using an intermediary object.  Examples of such
  * objects are queues, semaphores, mutexes and event groups.  Task notifications
@@ -2185,7 +2188,7 @@ void vTaskNotifyGiveFromISR( TaskHandle_t xTaskToNotify, BaseType_t *pxHigherPri
  * \defgroup ulTaskNotifyTake ulTaskNotifyTake
  * \ingroup TaskNotifications
  */
-hy_u32_t ulTaskNotifyTake( BaseType_t xClearCountOnExit, TickType_t xTicksToWait ) PRIVILEGED_FUNCTION;
+uint32_t ulTaskNotifyTake( BaseType_t xClearCountOnExit, TickType_t xTicksToWait ) PRIVILEGED_FUNCTION;
 
 /**
  * task. h
@@ -2202,6 +2205,121 @@ hy_u32_t ulTaskNotifyTake( BaseType_t xClearCountOnExit, TickType_t xTicksToWait
  * \ingroup TaskNotifications
  */
 BaseType_t xTaskNotifyStateClear( TaskHandle_t xTask );
+
+/**
+* task. h
+* <PRE>uint32_t ulTaskNotifyValueClear( TaskHandle_t xTask, uint32_t ulBitsToClear );</pre>
+*
+* Clears the bits specified by the ulBitsToClear bit mask in the notification
+* value of the task referenced by xTask.
+*
+* Set ulBitsToClear to 0xffffffff (UINT_MAX on 32-bit architectures) to clear
+* the notification value to 0.  Set ulBitsToClear to 0 to query the task's
+* notification value without clearing any bits.
+*
+* @return The value of the target task's notification value before the bits
+* specified by ulBitsToClear were cleared.
+* \defgroup ulTaskNotifyValueClear ulTaskNotifyValueClear
+* \ingroup TaskNotifications
+*/
+uint32_t ulTaskNotifyValueClear( TaskHandle_t xTask, uint32_t ulBitsToClear ) PRIVILEGED_FUNCTION;
+
+/**
+ * task.h
+ * <pre>void vTaskSetTimeOutState( TimeOut_t * const pxTimeOut )</pre>
+ *
+ * Capture the current time for future use with xTaskCheckForTimeOut().
+ *
+ * @param pxTimeOut Pointer to a timeout object into which the current time
+ * is to be captured.  The captured time includes the tick count and the number
+ * of times the tick count has overflowed since the system first booted.
+ * \defgroup vTaskSetTimeOutState vTaskSetTimeOutState
+ * \ingroup TaskCtrl
+ */
+void vTaskSetTimeOutState( TimeOut_t * const pxTimeOut ) PRIVILEGED_FUNCTION;
+
+/**
+ * task.h
+ * <pre>BaseType_t xTaskCheckForTimeOut( TimeOut_t * const pxTimeOut, TickType_t * const pxTicksToWait );</pre>
+ *
+ * Determines if pxTicksToWait ticks has passed since a time was captured
+ * using a call to vTaskSetTimeOutState().  The captured time includes the tick
+ * count and the number of times the tick count has overflowed.
+ *
+ * @param pxTimeOut The time status as captured previously using
+ * vTaskSetTimeOutState. If the timeout has not yet occurred, it is updated
+ * to reflect the current time status.
+ * @param pxTicksToWait The number of ticks to check for timeout i.e. if
+ * pxTicksToWait ticks have passed since pxTimeOut was last updated (either by
+ * vTaskSetTimeOutState() or xTaskCheckForTimeOut()), the timeout has occurred.
+ * If the timeout has not occurred, pxTIcksToWait is updated to reflect the
+ * number of remaining ticks.
+ *
+ * @return If timeout has occurred, pdTRUE is returned. Otherwise pdFALSE is
+ * returned and pxTicksToWait is updated to reflect the number of remaining
+ * ticks.
+ *
+ * @see https://www.freertos.org/xTaskCheckForTimeOut.html
+ *
+ * Example Usage:
+ * <pre>
+	// Driver library function used to receive uxWantedBytes from an Rx buffer
+	// that is filled by a UART interrupt. If there are not enough bytes in the
+	// Rx buffer then the task enters the Blocked state until it is notified that
+	// more data has been placed into the buffer. If there is still not enough
+	// data then the task re-enters the Blocked state, and xTaskCheckForTimeOut()
+	// is used to re-calculate the Block time to ensure the total amount of time
+	// spent in the Blocked state does not exceed MAX_TIME_TO_WAIT. This
+	// continues until either the buffer contains at least uxWantedBytes bytes,
+	// or the total amount of time spent in the Blocked state reaches
+	// MAX_TIME_TO_WAIT – at which point the task reads however many bytes are
+	// available up to a maximum of uxWantedBytes.
+
+	size_t xUART_Receive( uint8_t *pucBuffer, size_t uxWantedBytes )
+	{
+	size_t uxReceived = 0;
+	TickType_t xTicksToWait = MAX_TIME_TO_WAIT;
+	TimeOut_t xTimeOut;
+
+		// Initialize xTimeOut.  This records the time at which this function
+		// was entered.
+		vTaskSetTimeOutState( &xTimeOut );
+
+		// Loop until the buffer contains the wanted number of bytes, or a
+		// timeout occurs.
+		while( UART_bytes_in_rx_buffer( pxUARTInstance ) < uxWantedBytes )
+		{
+			// The buffer didn't contain enough data so this task is going to
+			// enter the Blocked state. Adjusting xTicksToWait to account for
+			// any time that has been spent in the Blocked state within this
+			// function so far to ensure the total amount of time spent in the
+			// Blocked state does not exceed MAX_TIME_TO_WAIT.
+			if( xTaskCheckForTimeOut( &xTimeOut, &xTicksToWait ) != pdFALSE )
+			{
+				//Timed out before the wanted number of bytes were available,
+				// exit the loop.
+				break;
+			}
+
+			// Wait for a maximum of xTicksToWait ticks to be notified that the
+			// receive interrupt has placed more data into the buffer.
+			ulTaskNotifyTake( pdTRUE, xTicksToWait );
+		}
+
+		// Attempt to read uxWantedBytes from the receive buffer into pucBuffer.
+		// The actual number of bytes read (which might be less than
+		// uxWantedBytes) is returned.
+		uxReceived = UART_read_from_receive_buffer( pxUARTInstance,
+													pucBuffer,
+													uxWantedBytes );
+
+		return uxReceived;
+	}
+ </pre>
+ * \defgroup xTaskCheckForTimeOut xTaskCheckForTimeOut
+ * \ingroup TaskCtrl
+ */
+BaseType_t xTaskCheckForTimeOut( TimeOut_t * const pxTimeOut, TickType_t * const pxTicksToWait ) PRIVILEGED_FUNCTION;
 
 /*-----------------------------------------------------------
  * SCHEDULER INTERNALS AVAILABLE FOR PORTING PURPOSES
@@ -2320,17 +2438,6 @@ TickType_t uxTaskResetEventItemValue( void ) PRIVILEGED_FUNCTION;
 TaskHandle_t xTaskGetCurrentTaskHandle( void ) PRIVILEGED_FUNCTION;
 
 /*
- * Capture the current time status for future reference.
- */
-void vTaskSetTimeOutState( TimeOut_t * const pxTimeOut ) PRIVILEGED_FUNCTION;
-
-/*
- * Compare the time status now with that previously captured to see if the
- * timeout has expired.
- */
-BaseType_t xTaskCheckForTimeOut( TimeOut_t * const pxTimeOut, TickType_t * const pxTicksToWait ) PRIVILEGED_FUNCTION;
-
-/*
  * Shortcut used by the queue implementation to prevent unnecessary call to
  * taskYIELD();
  */
@@ -2384,6 +2491,19 @@ void vTaskSetTaskNumber( TaskHandle_t xTask, const UBaseType_t uxHandle ) PRIVIL
  * equal to the idle period.
  */
 void vTaskStepTick( const TickType_t xTicksToJump ) PRIVILEGED_FUNCTION;
+
+/* Correct the tick count value after the application code has held
+interrupts disabled for an extended period.  xTicksToCatchUp is the number
+of tick interrupts that have been missed due to interrupts being disabled.
+Its value is not computed automatically, so must be computed by the
+application writer.
+
+This function is similar to vTaskStepTick(), however, unlike
+vTaskStepTick(), xTaskCatchUpTicks() may move the tick count forward past a
+time at which a task should be removed from the blocked state.  That means
+tasks may have to be removed from the blocked state as the tick count is
+moved. */
+BaseType_t xTaskCatchUpTicks( TickType_t xTicksToCatchUp ) PRIVILEGED_FUNCTION;
 
 /*
  * Only available when configUSE_TICKLESS_IDLE is set to 1.

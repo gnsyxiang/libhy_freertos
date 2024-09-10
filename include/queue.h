@@ -1,6 +1,6 @@
 /*
- * FreeRTOS Kernel V10.2.1
- * Copyright (C) 2019 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
+ * FreeRTOS Kernel V10.3.1
+ * Copyright (C) 2020 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -121,8 +121,8 @@ typedef struct QueueDefinition * QueueSetMemberHandle_t;
  {
  QueueHandle_t xQueue1, xQueue2;
 
-	// Create a queue capable of containing 10 hy_u32_t values.
-	xQueue1 = xQueueCreate( 10, sizeof( hy_u32_t ) );
+	// Create a queue capable of containing 10 uint32_t values.
+	xQueue1 = xQueueCreate( 10, sizeof( uint32_t ) );
 	if( xQueue1 == 0 )
 	{
 		// Queue was not created and must not be used.
@@ -200,7 +200,7 @@ typedef struct QueueDefinition * QueueSetMemberHandle_t;
  };
 
  #define QUEUE_LENGTH 10
- #define ITEM_SIZE sizeof( hy_u32_t )
+ #define ITEM_SIZE sizeof( uint32_t )
 
  // xQueueBuffer will hold the queue structure.
  StaticQueue_t xQueueBuffer;
@@ -213,7 +213,7 @@ typedef struct QueueDefinition * QueueSetMemberHandle_t;
  {
  QueueHandle_t xQueue1;
 
-	// Create a queue capable of containing 10 hy_u32_t values.
+	// Create a queue capable of containing 10 uint32_t values.
 	xQueue1 = xQueueCreate( QUEUE_LENGTH, // The number of items the queue can hold.
 							ITEM_SIZE	  // The size of each item in the queue
 							&( ucQueueStorage[ 0 ] ), // The buffer that will hold the items in the queue.
@@ -270,15 +270,15 @@ typedef struct QueueDefinition * QueueSetMemberHandle_t;
 	char ucData[ 20 ];
  } xMessage;
 
- hy_u32_t ulVar = 10UL;
+ uint32_t ulVar = 10UL;
 
  void vATask( void *pvParameters )
  {
  QueueHandle_t xQueue1, xQueue2;
  struct AMessage *pxMessage;
 
-	// Create a queue capable of containing 10 hy_u32_t values.
-	xQueue1 = xQueueCreate( 10, sizeof( hy_u32_t ) );
+	// Create a queue capable of containing 10 uint32_t values.
+	xQueue1 = xQueueCreate( 10, sizeof( uint32_t ) );
 
 	// Create a queue capable of containing 10 pointers to AMessage structures.
 	// These should be passed by pointer as they contain a lot of data.
@@ -288,7 +288,7 @@ typedef struct QueueDefinition * QueueSetMemberHandle_t;
 
 	if( xQueue1 != 0 )
 	{
-		// Send an hy_u32_t.  Wait for 10 ticks for space to become
+		// Send an uint32_t.  Wait for 10 ticks for space to become
 		// available if necessary.
 		if( xQueueSendToFront( xQueue1, ( void * ) &ulVar, ( TickType_t ) 10 ) != pdPASS )
 		{
@@ -352,15 +352,15 @@ typedef struct QueueDefinition * QueueSetMemberHandle_t;
 	char ucData[ 20 ];
  } xMessage;
 
- hy_u32_t ulVar = 10UL;
+ uint32_t ulVar = 10UL;
 
  void vATask( void *pvParameters )
  {
  QueueHandle_t xQueue1, xQueue2;
  struct AMessage *pxMessage;
 
-	// Create a queue capable of containing 10 hy_u32_t values.
-	xQueue1 = xQueueCreate( 10, sizeof( hy_u32_t ) );
+	// Create a queue capable of containing 10 uint32_t values.
+	xQueue1 = xQueueCreate( 10, sizeof( uint32_t ) );
 
 	// Create a queue capable of containing 10 pointers to AMessage structures.
 	// These should be passed by pointer as they contain a lot of data.
@@ -370,7 +370,7 @@ typedef struct QueueDefinition * QueueSetMemberHandle_t;
 
 	if( xQueue1 != 0 )
 	{
-		// Send an hy_u32_t.  Wait for 10 ticks for space to become
+		// Send an uint32_t.  Wait for 10 ticks for space to become
 		// available if necessary.
 		if( xQueueSendToBack( xQueue1, ( void * ) &ulVar, ( TickType_t ) 10 ) != pdPASS )
 		{
@@ -436,15 +436,15 @@ typedef struct QueueDefinition * QueueSetMemberHandle_t;
 	char ucData[ 20 ];
  } xMessage;
 
- hy_u32_t ulVar = 10UL;
+ uint32_t ulVar = 10UL;
 
  void vATask( void *pvParameters )
  {
  QueueHandle_t xQueue1, xQueue2;
  struct AMessage *pxMessage;
 
-	// Create a queue capable of containing 10 hy_u32_t values.
-	xQueue1 = xQueueCreate( 10, sizeof( hy_u32_t ) );
+	// Create a queue capable of containing 10 uint32_t values.
+	xQueue1 = xQueueCreate( 10, sizeof( uint32_t ) );
 
 	// Create a queue capable of containing 10 pointers to AMessage structures.
 	// These should be passed by pointer as they contain a lot of data.
@@ -454,7 +454,7 @@ typedef struct QueueDefinition * QueueSetMemberHandle_t;
 
 	if( xQueue1 != 0 )
 	{
-		// Send an hy_u32_t.  Wait for 10 ticks for space to become
+		// Send an uint32_t.  Wait for 10 ticks for space to become
 		// available if necessary.
 		if( xQueueSend( xQueue1, ( void * ) &ulVar, ( TickType_t ) 10 ) != pdPASS )
 		{
@@ -514,13 +514,13 @@ typedef struct QueueDefinition * QueueSetMemberHandle_t;
  void vFunction( void *pvParameters )
  {
  QueueHandle_t xQueue;
- hy_u32_t ulVarToSend, ulValReceived;
+ uint32_t ulVarToSend, ulValReceived;
 
-	// Create a queue to hold one hy_u32_t value.  It is strongly
+	// Create a queue to hold one uint32_t value.  It is strongly
 	// recommended *not* to use xQueueOverwrite() on queues that can
 	// contain more than one value, and doing so will trigger an assertion
 	// if configASSERT() is defined.
-	xQueue = xQueueCreate( 1, sizeof( hy_u32_t ) );
+	xQueue = xQueueCreate( 1, sizeof( uint32_t ) );
 
 	// Write the value 10 to the queue using xQueueOverwrite().
 	ulVarToSend = 10;
@@ -607,15 +607,15 @@ typedef struct QueueDefinition * QueueSetMemberHandle_t;
 	char ucData[ 20 ];
  } xMessage;
 
- hy_u32_t ulVar = 10UL;
+ uint32_t ulVar = 10UL;
 
  void vATask( void *pvParameters )
  {
  QueueHandle_t xQueue1, xQueue2;
  struct AMessage *pxMessage;
 
-	// Create a queue capable of containing 10 hy_u32_t values.
-	xQueue1 = xQueueCreate( 10, sizeof( hy_u32_t ) );
+	// Create a queue capable of containing 10 uint32_t values.
+	xQueue1 = xQueueCreate( 10, sizeof( uint32_t ) );
 
 	// Create a queue capable of containing 10 pointers to AMessage structures.
 	// These should be passed by pointer as they contain a lot of data.
@@ -625,7 +625,7 @@ typedef struct QueueDefinition * QueueSetMemberHandle_t;
 
 	if( xQueue1 != 0 )
 	{
-		// Send an hy_u32_t.  Wait for 10 ticks for space to become
+		// Send an uint32_t.  Wait for 10 ticks for space to become
 		// available if necessary.
 		if( xQueueGenericSend( xQueue1, ( void * ) &ulVar, ( TickType_t ) 10, queueSEND_TO_BACK ) != pdPASS )
 		{
@@ -1099,18 +1099,18 @@ void vQueueDelete( QueueHandle_t xQueue ) PRIVILEGED_FUNCTION;
 
  void vFunction( void *pvParameters )
  {
- 	// Create a queue to hold one hy_u32_t value.  It is strongly
+ 	// Create a queue to hold one uint32_t value.  It is strongly
 	// recommended *not* to use xQueueOverwriteFromISR() on queues that can
 	// contain more than one value, and doing so will trigger an assertion
 	// if configASSERT() is defined.
-	xQueue = xQueueCreate( 1, sizeof( hy_u32_t ) );
+	xQueue = xQueueCreate( 1, sizeof( uint32_t ) );
 }
 
 void vAnInterruptHandler( void )
 {
 // xHigherPriorityTaskWoken must be set to pdFALSE before it is used.
 BaseType_t xHigherPriorityTaskWoken = pdFALSE;
-hy_u32_t ulVarToSend, ulValReceived;
+uint32_t ulVarToSend, ulValReceived;
 
 	// Write the value 10 to the queue using xQueueOverwriteFromISR().
 	ulVarToSend = 10;
@@ -1284,7 +1284,7 @@ hy_u32_t ulVarToSend, ulValReceived;
 	// name of the yield function required is port specific.
 	if( xHigherPriorityTaskWokenByPost )
 	{
-		taskYIELD_YIELD_FROM_ISR();
+		portYIELD_FROM_ISR();
 	}
  }
  </pre>

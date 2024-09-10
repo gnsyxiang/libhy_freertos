@@ -5,7 +5,7 @@
 # @file    Makefile.am
 # @brief   
 # @author  gnsyxiang <gnsyxiang@163.com>
-# @date    08/08 2024 14:26
+# @date    06/05 2024 10:57
 # @version v0.0.1
 # 
 # @since    note
@@ -13,12 +13,14 @@
 # 
 #     change log:
 #     NO.     Author              Date            Modified
-#     00      zhenquan.qiu        08/08 2024      create the file
+#     00      zhenquan.qiu        06/05 2024      create the file
 # 
-#     last modified: 08/08 2024 14:26
+#     last modified: 06/05 2024 10:57
 # ===============================================================
 
-noinst_LTLIBRARIES = lib@project_name@_posix.la
+SUBDIRS = utils
+
+noinst_LTLIBRARIES = libfreertos_portable_gcc_@porting_platform@.la
 
 # ------------------
 # defining variables
@@ -41,7 +43,8 @@ _no_error_com   +=
 _define_com     +=
 
 _include_com    += \
-                   -I$(top_srcdir)/include
+                   -I$(top_srcdir)/src/$(run_os)/FreeRTOS-Kernel/include \
+                   -I$(top_srcdir)/src/$(run_os)/FreeRTOS-Kernel/portable/GCC/$(porting_platform)
 
 _sources_com    += \
                    port.c
@@ -57,9 +60,12 @@ _cxxflags_com   +=
 
 _ldadd_com      += $(ldadd_com)
 
-lib@project_name@_posix_la_SOURCES  = $(_sources_com)
-lib@project_name@_posix_la_CPPFLAGS = $(_cppflags_com)
-lib@project_name@_posix_la_CFLAGS   = $(_cflags_com)
-lib@project_name@_posix_la_CXXFLAGS = $(_cxxflags_com)
-lib@project_name@_posix_la_LDFLAGS  = $(_ldflags_com)
-lib@project_name@_posix_la_LIBADD   = $(_ldadd_com)
+_ldadd_com      += \
+                   $(top_builddir)/src/$(run_os)/FreeRTOS-Kernel/portable/GCC/POSIX/utils/libfreertos_portable_gcc_posix_utils.la
+
+libfreertos_portable_gcc_@porting_platform@_la_SOURCES  = $(_sources_com)
+libfreertos_portable_gcc_@porting_platform@_la_CPPFLAGS = $(_cppflags_com)
+libfreertos_portable_gcc_@porting_platform@_la_CFLAGS   = $(_cflags_com)
+libfreertos_portable_gcc_@porting_platform@_la_CXXFLAGS = $(_cxxflags_com)
+libfreertos_portable_gcc_@porting_platform@_la_LDFLAGS  = $(_ldflags_com)
+libfreertos_portable_gcc_@porting_platform@_la_LIBADD   = $(_ldadd_com)
