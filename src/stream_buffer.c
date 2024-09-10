@@ -1,6 +1,6 @@
 /*
- * FreeRTOS Kernel V10.2.1
- * Copyright (C) 2019 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
+ * FreeRTOS Kernel V10.3.1
+ * Copyright (C) 2020 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -60,7 +60,7 @@ that uses task notifications. */
 			if( ( pxStreamBuffer )->xTaskWaitingToSend != NULL )						\
 			{																			\
 				( void ) xTaskNotify( ( pxStreamBuffer )->xTaskWaitingToSend,			\
-									  ( hy_u32_t ) 0,									\
+									  ( uint32_t ) 0,									\
 									  eNoAction );										\
 				( pxStreamBuffer )->xTaskWaitingToSend = NULL;							\
 			}																			\
@@ -79,7 +79,7 @@ that uses task notifications. */
 			if( ( pxStreamBuffer )->xTaskWaitingToSend != NULL )						\
 			{																			\
 				( void ) xTaskNotifyFromISR( ( pxStreamBuffer )->xTaskWaitingToSend,	\
-											 ( hy_u32_t ) 0,							\
+											 ( uint32_t ) 0,							\
 											 eNoAction,									\
 											 pxHigherPriorityTaskWoken );				\
 				( pxStreamBuffer )->xTaskWaitingToSend = NULL;							\
@@ -99,7 +99,7 @@ that uses task notifications. */
 			if( ( pxStreamBuffer )->xTaskWaitingToReceive != NULL )						\
 			{																			\
 				( void ) xTaskNotify( ( pxStreamBuffer )->xTaskWaitingToReceive,		\
-									  ( hy_u32_t ) 0,									\
+									  ( uint32_t ) 0,									\
 									  eNoAction );										\
 				( pxStreamBuffer )->xTaskWaitingToReceive = NULL;						\
 			}																			\
@@ -117,7 +117,7 @@ that uses task notifications. */
 			if( ( pxStreamBuffer )->xTaskWaitingToReceive != NULL )						\
 			{																			\
 				( void ) xTaskNotifyFromISR( ( pxStreamBuffer )->xTaskWaitingToReceive,	\
-											 ( hy_u32_t ) 0,							\
+											 ( uint32_t ) 0,							\
 											 eNoAction,									\
 											 pxHigherPriorityTaskWoken );				\
 				( pxStreamBuffer )->xTaskWaitingToReceive = NULL;						\
@@ -562,7 +562,7 @@ TimeOut_t xTimeOut;
 			taskEXIT_CRITICAL();
 
 			traceBLOCKING_ON_STREAM_BUFFER_SEND( xStreamBuffer );
-			( void ) xTaskNotifyWait( ( hy_u32_t ) 0, ( hy_u32_t ) 0, NULL, xTicksToWait );
+			( void ) xTaskNotifyWait( ( uint32_t ) 0, ( uint32_t ) 0, NULL, xTicksToWait );
 			pxStreamBuffer->xTaskWaitingToSend = NULL;
 
 		} while( xTaskCheckForTimeOut( &xTimeOut, &xTicksToWait ) == pdFALSE );
@@ -768,7 +768,7 @@ size_t xReceivedLength = 0, xBytesAvailable, xBytesToStoreMessageLength;
 		{
 			/* Wait for data to be available. */
 			traceBLOCKING_ON_STREAM_BUFFER_RECEIVE( xStreamBuffer );
-			( void ) xTaskNotifyWait( ( hy_u32_t ) 0, ( hy_u32_t ) 0, NULL, xTicksToWait );
+			( void ) xTaskNotifyWait( ( uint32_t ) 0, ( uint32_t ) 0, NULL, xTicksToWait );
 			pxStreamBuffer->xTaskWaitingToReceive = NULL;
 
 			/* Recheck the data available after blocking. */
@@ -1038,7 +1038,7 @@ UBaseType_t uxSavedInterruptStatus;
 		if( ( pxStreamBuffer )->xTaskWaitingToReceive != NULL )
 		{
 			( void ) xTaskNotifyFromISR( ( pxStreamBuffer )->xTaskWaitingToReceive,
-										 ( hy_u32_t ) 0,
+										 ( uint32_t ) 0,
 										 eNoAction,
 										 pxHigherPriorityTaskWoken );
 			( pxStreamBuffer )->xTaskWaitingToReceive = NULL;
@@ -1068,7 +1068,7 @@ UBaseType_t uxSavedInterruptStatus;
 		if( ( pxStreamBuffer )->xTaskWaitingToSend != NULL )
 		{
 			( void ) xTaskNotifyFromISR( ( pxStreamBuffer )->xTaskWaitingToSend,
-										 ( hy_u32_t ) 0,
+										 ( uint32_t ) 0,
 										 eNoAction,
 										 pxHigherPriorityTaskWoken );
 			( pxStreamBuffer )->xTaskWaitingToSend = NULL;
@@ -1221,7 +1221,7 @@ static void prvInitialiseNewStreamBuffer( StreamBuffer_t * const pxStreamBuffer,
 		memory.  Don't use 0xA5 as that is the stack fill value and could
 		result in confusion as to what is actually being observed. */
 		const BaseType_t xWriteValue = 0x55;
-		configASSERT( memset( pucBuffer, ( hy_s32_t ) xWriteValue, xBufferSizeBytes ) == pucBuffer );
+		configASSERT( memset( pucBuffer, ( int ) xWriteValue, xBufferSizeBytes ) == pucBuffer );
 	} /*lint !e529 !e438 xWriteValue is only used if configASSERT() is defined. */
 	#endif
 

@@ -52,15 +52,18 @@ CHECK_LIBHY_OS_TYPE
 AC_CHECK_HEADERS([limits.h stddef.h stdint.h stdlib.h string.h sys/time.h unistd.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
+AC_CHECK_HEADER_STDBOOL
+AC_C_INLINE
 AC_TYPE_INT8_T
 AC_TYPE_SIZE_T
 AC_TYPE_UINT16_T
 AC_TYPE_UINT32_T
+AC_TYPE_UINT64_T
 AC_TYPE_UINT8_T
 
 # Checks for library functions.
 AC_FUNC_MALLOC
-AC_CHECK_FUNCS([memset])
+AC_CHECK_FUNCS([clock_gettime memset strerror])
 
 AC_CONFIG_FILES([Makefile
                  $project_name.pc
@@ -79,8 +82,10 @@ AC_CONFIG_FILES([Makefile
                  include/Makefile
                  res/Makefile
                  src/Makefile
+                 src/portable/GCC/ARM_CM4F/Makefile
                  src/portable/GCC/Makefile
-                 src/portable/GCC/Posix/Makefile
+                 src/portable/GCC/POSIX/Makefile
+                 src/portable/GCC/POSIX/utils/Makefile
                  src/portable/Makefile
                  src/portable/MemMang/Makefile
                  test/Makefile])

@@ -5,7 +5,7 @@
 # @file    Makefile.am
 # @brief   
 # @author  gnsyxiang <gnsyxiang@163.com>
-# @date    05/03 2021 10:35
+# @date    09/08 2024 09:06
 # @version v0.0.1
 # 
 # @since    note
@@ -13,9 +13,9 @@
 # 
 #     change log:
 #     NO.     Author              Date            Modified
-#     00      zhenquan.qiu        05/03 2021      create the file
+#     00      zhenquan.qiu        09/08 2024      create the file
 # 
-#     last modified: 05/03 2021 10:35
+#     last modified: 09/08 2024 09:06
 # ===============================================================
 
 # ------------------
@@ -24,7 +24,7 @@
 _no_install_headers_com =
 _install_headers_com    =
 
-install_includedir      = $(includedir)/@project_name@
+install_includedir      = $(includedir)/$(project_name)
 
 # ---------------------
 # add necessary content
@@ -34,6 +34,7 @@ _no_install_headers_com +=
 _install_headers_com    += \
                            FreeRTOS.h \
                            StackMacros.h \
+                           atomic.h \
                            croutine.h \
                            deprecated_definitions.h \
                            event_groups.h \
@@ -48,7 +49,9 @@ _install_headers_com    += \
                            stack_macros.h \
                            stream_buffer.h \
                            task.h \
-                           timers.h
+                           timers.h \
+                           \
+                           hy_freertos.h
 
 # ------------------
 # make install files
