@@ -18,7 +18,7 @@
 
 SUBDIRS = portable
 
-noinst_LTLIBRARIES = libfreertos-kernel.la
+lib_LTLIBRARIES = lib@project_name@.la
 
 # ------------------
 # defining variables
@@ -62,11 +62,17 @@ _cflags_com     +=
 
 _cxxflags_com   +=
 
+_ldflags_com    += -version-info @current@:@revision@:@age@
+
 _ldadd_com      += $(ldadd_com)
 
-libfreertos_kernel_la_SOURCES   = $(_sources_com)
-libfreertos_kernel_la_CPPFLAGS  = $(_cppflags_com)
-libfreertos_kernel_la_CFLAGS    = $(_cflags_com)
-libfreertos_kernel_la_CXXFLAGS  = $(_cxxflags_com)
-libfreertos_kernel_la_LDFLAGS   = $(_ldflags_com)
-libfreertos_kernel_la_LIBADD    = $(_ldadd_com)
+_ldadd_com      += \
+                   $(top_builddir)/src/portable/GCC/$(porting_platform)/libfreertos_portable_gcc_@porting_platform@.la \
+                   $(top_builddir)/src/portable/MemMang/libfreertos_portable_mem.la
+
+lib@project_name@_la_SOURCES    = $(_sources_com)
+lib@project_name@_la_CPPFLAGS   = $(_cppflags_com)
+lib@project_name@_la_CFLAGS     = $(_cflags_com)
+lib@project_name@_la_CXXFLAGS   = $(_cxxflags_com)
+lib@project_name@_la_LDFLAGS    = $(_ldflags_com)
+lib@project_name@_la_LIBADD     = $(_ldadd_com)
