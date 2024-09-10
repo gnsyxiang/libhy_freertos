@@ -296,7 +296,7 @@ get_config()
 
 select_vender
 select_chip
-select_os
+# select_os
 # select_product
 # select_language
 select_build_version

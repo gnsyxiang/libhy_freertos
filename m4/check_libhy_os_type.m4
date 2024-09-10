@@ -20,11 +20,7 @@
 
 AC_DEFUN([CHECK_LIBHY_OS_TYPE],
     [
-        AC_ARG_ENABLE([hy_os_type],
-            [AS_HELP_STRING([--disable-hy_os_type],
-                [disable support for hy_os_type])],
-                [],
-                [enable_hy_os_type=yes])
+        AC_ARG_ENABLE([hy_os_type], [AS_HELP_STRING([--disable-hy_os_type], [disable support for hy_os_type])], [], [enable_hy_os_type=yes])
 
         case "$enable_hy_os_type" in
             yes)
@@ -55,11 +51,7 @@ AC_DEFUN([CHECK_LIBHY_OS_TYPE],
 
                         # clear cache
                         unset ac_cv_search_HyOsTypeCheck
-                        AC_SEARCH_LIBS([HyOsTypeCheck],
-                                [hy_os_type],
-                                [have_hy_os_type=yes HY_OS_TYPE_LIBS="$LIBS"],
-                                [have_hy_os_type=no],
-                                [])
+                        AC_SEARCH_LIBS([HyOsTypeCheck], [hy_os_type], [have_hy_os_type=yes HY_OS_TYPE_LIBS="$LIBS"], [have_hy_os_type=no], [])
                         LIBS="$save_LIBS"
                     ;;
                 esac
@@ -78,9 +70,9 @@ AC_DEFUN([CHECK_LIBHY_OS_TYPE],
                     ;;
                     *)
                     AC_MSG_ERROR([hy_os_type is a must but can not be found. You should add the \
-                            directory containing `hy_os_type.pc' to the `PKG_CONFIG_PATH' environment variable, \
-                            or set `CPPFLAGS' and `LDFLAGS' directly for hy_os_type, or use `--disable-hy_os_type' \
-                            to disable support for hy_os_type encryption])
+directory containing `hy_os_type.pc' to the `PKG_CONFIG_PATH' environment variable, \
+or set `CPPFLAGS' and `LDFLAGS' directly for hy_os_type, or use `--disable-hy_os_type' \
+to disable support for hy_os_type encryption])
                     ;;
                 esac
             ;;
