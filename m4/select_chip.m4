@@ -25,6 +25,7 @@ dnl ===============================================================
 AC_DEFUN([SELECT_CHIP],
     [
         chip=""
+        porting_platform=""
 
         AC_ARG_WITH([chip],
                     [AS_HELP_STRING([--with-chip=@<:@ubuntu|windows|rk3568|esp32|stm32h7xx@:>@],
@@ -37,26 +38,31 @@ AC_DEFUN([SELECT_CHIP],
                 AC_DEFINE(HAVE_SELECT_CHIP_UBUNTU,  1, [select ubuntu chip])
                 AC_DEFINE(HAVE_SELECT_OS_LINUX,  1, [select linux os])
                 chip="ubuntu"
+                porting_platform="POSIX"
             ;;
             windows)
                 AC_DEFINE(HAVE_SELECT_CHIP_WINDOWS,  1, [select windows chip])
                 AC_DEFINE(HAVE_SELECT_OS_WINDOWS,  1, [select windows os])
                 chip="windows"
+                porting_platform=""
             ;;
             rk3568)
                 AC_DEFINE(HAVE_SELECT_CHIP_RK3568,  1, [select rk3568 chip])
                 AC_DEFINE(HAVE_SELECT_OS_LINUX,  1, [select linux os])
                 chip="rk3568"
+                porting_platform="POSIX"
             ;;
             esp32)
                 AC_DEFINE(HAVE_SELECT_CHIP_ESP32,  1, [select esp32 chip])
                 AC_DEFINE(HAVE_SELECT_OS_FREERTOS,  1, [select freertos os])
                 chip="esp32"
+                porting_platform=""
             ;;
             stm32h7xx)
                 AC_DEFINE(HAVE_SELECT_CHIP_STM32H7XX,  1, [select stm32h7xx chip])
                 AC_DEFINE(HAVE_SELECT_OS_MCU,  1, [select mcu os])
                 chip="stm32h7xx"
+                porting_platform="ARM_CM4F"
             ;;
             *)
                 AC_MSG_ERROR([bad value ${with_chip} for --with-chip=@<:@ubuntu|windows|rk3568|esp32|stm32h7xx@:>@])
@@ -64,6 +70,7 @@ AC_DEFUN([SELECT_CHIP],
         esac
 
         AC_SUBST(chip)
+        AC_SUBST(porting_platform)
 
         AM_CONDITIONAL([COMPILE_SELECT_CHIP_UBUNTU],    [test "x$with_chip" = "xubuntu"])
         AM_CONDITIONAL([COMPILE_SELECT_CHIP_WINDOWS],   [test "x$with_chip" = "xwindows"])
